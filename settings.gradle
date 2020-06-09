@@ -1,0 +1,2 @@
+rootProject.name='GooglePlay20'
+include ':app'

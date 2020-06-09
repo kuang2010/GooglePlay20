@@ -32,17 +32,18 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initView();
-        initData();
+        initData();// 创建Fragement的过程需要时间(视图,loadingpager)
         initEvent();
     }
 
     private void initEvent() {
+        //优化数据触发加载时机
         mVp_main.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
                 mVp_main.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 BaseFragment baseFragment = mTabFragmentBeans.get(0).getBaseFragment();
-                baseFragment.getMianPagerControl().triggerLoadData();
+                baseFragment.getMianPagerControl().triggerLoadData();//需要判断MianPagerControl()是否为空
             }
         });
         mVp_main.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -54,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onPageSelected(int position) {
                 BaseFragment baseFragment = mTabFragmentBeans.get(position).getBaseFragment();
-                baseFragment.getMianPagerControl().triggerLoadData();
+                baseFragment.getMianPagerControl().triggerLoadData();//需要判断MianPagerControl()是否为空
             }
 
             @Override

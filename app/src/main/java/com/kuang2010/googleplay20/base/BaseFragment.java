@@ -56,7 +56,7 @@ public abstract class BaseFragment extends Fragment {
                 ((ViewGroup) parent).removeView(mMianPagerControl);
             }
         }
-//        mMianPagerControl.triggerLoadData();
+//        mMianPagerControl.triggerLoadData();  //优化数据触发加载时机 selectPosition
         return mMianPagerControl;
     }
 

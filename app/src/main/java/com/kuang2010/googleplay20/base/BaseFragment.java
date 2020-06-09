@@ -22,6 +22,11 @@ public abstract class BaseFragment extends Fragment {
     private MianPagerControl mMianPagerControl;
     public Context mContext;
 
+    public MianPagerControl getMianPagerControl() {
+        return mMianPagerControl;
+
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,7 +56,7 @@ public abstract class BaseFragment extends Fragment {
                 ((ViewGroup) parent).removeView(mMianPagerControl);
             }
         }
-        mMianPagerControl.triggerLoadData();
+//        mMianPagerControl.triggerLoadData();
         return mMianPagerControl;
     }
 

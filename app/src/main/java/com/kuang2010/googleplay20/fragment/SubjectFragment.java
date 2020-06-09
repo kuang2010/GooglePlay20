@@ -19,23 +19,7 @@ import java.util.Random;
 public class SubjectFragment extends BaseFragment {
     @Override
     protected void initData(final MianPagerControl.ILoadDataFinishCallBack callBack) {
-        new Thread(){
-            @Override
-            public void run() {
-                super.run();
-                SystemClock.sleep(2000);
 
-                MianPagerControl.PageState[] pageStates = new MianPagerControl.PageState[]{
-                        MianPagerControl.PageState.STATE_SUCCESS,
-                        MianPagerControl.PageState.STATE_ERROR,
-                        MianPagerControl.PageState.STATE_EMPTY,
-                };
-                Random random = new Random();
-                int index = random.nextInt(pageStates.length) ;
-                callBack.onPageStateResult(pageStates[index]);
-
-            }
-        }.start();
     }
 
     @Override

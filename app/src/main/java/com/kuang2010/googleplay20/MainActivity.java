@@ -5,9 +5,11 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ViewTreeObserver;
 
 import com.google.android.material.tabs.TabLayout;
 import com.kuang2010.googleplay20.adapter.MainPagerAdapter;
+import com.kuang2010.googleplay20.base.BaseFragment;
 import com.kuang2010.googleplay20.bean.TabFragmentBean;
 import com.kuang2010.googleplay20.fragment.AppFragment;
 import com.kuang2010.googleplay20.fragment.CategoryFragment;
@@ -35,6 +37,32 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initEvent() {
+        mVp_main.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                mVp_main.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                BaseFragment baseFragment = mTabFragmentBeans.get(0).getBaseFragment();
+                baseFragment.getMianPagerControl().triggerLoadData();
+            }
+        });
+        mVp_main.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                BaseFragment baseFragment = mTabFragmentBeans.get(position).getBaseFragment();
+                baseFragment.getMianPagerControl().triggerLoadData();
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
         mTab_main.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {

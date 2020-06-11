@@ -7,9 +7,9 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.kuang2010.googleplay20.R;
+import com.kuang2010.googleplay20.base.BaseViewHold;
 import com.kuang2010.googleplay20.bean.AppInfoBean;
 import com.kuang2010.googleplay20.conf.Constant;
-import com.kuang2010.googleplay20.util.BitmapUtil;
 import com.kuang2010.googleplay20.util.BitmapUtilFactory;
 import com.kuang2010.googleplay20.util.StringUtils;
 

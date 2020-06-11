@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import com.kuang2010.googleplay20.R;
 import com.kuang2010.googleplay20.bean.AppInfoBean;
 import com.kuang2010.googleplay20.viewhold.AppInfoViewHold;
-import com.kuang2010.googleplay20.viewhold.BaseViewHold;
+import com.kuang2010.googleplay20.base.BaseViewHold;
 import com.kuang2010.googleplay20.viewhold.FootViewHold;
 
 import java.util.ArrayList;

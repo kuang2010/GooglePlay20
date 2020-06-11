@@ -1,4 +1,4 @@
-package com.kuang2010.googleplay20.viewhold;
+package com.kuang2010.googleplay20.base;
 
 import android.view.View;
 

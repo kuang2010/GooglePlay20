@@ -6,6 +6,7 @@ import android.widget.LinearLayout;
 
 import com.kuang2010.googleplay20.R;
 import com.kuang2010.googleplay20.adapter.HomeRvAdapter.LoadState;
+import com.kuang2010.googleplay20.base.BaseViewHold;
 
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
@@ -19,7 +20,7 @@ import androidx.annotation.NonNull;
  * time: 16:15
  * desc:
  */
-public class FootViewHold extends BaseViewHold<LoadState>{
+public class FootViewHold extends BaseViewHold<LoadState> {
 
     @ViewInject(R.id.item_loadmore_container_loading)
     LinearLayout mContainerLoading;
@@ -52,4 +53,5 @@ public class FootViewHold extends BaseViewHold<LoadState>{
                 break;
         }
     }
+
 }

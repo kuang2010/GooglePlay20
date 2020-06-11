@@ -114,7 +114,7 @@ public abstract class MianPagerControl extends FrameLayout {
 
             ThreadPoolExecutorProxyFactory.createNormalThreadPoolExecutorProxy().submit(new TestLoadDataTask());
 
-            initData(new ILoadDataFinishCallBack() {
+            initData(new ILoadDataFinishCallBack() {//(线程+接口回调) 实现先数据再逻辑的异步加载
                 @Override
                 public void onPageStateResult(PageState pageState) {
                     mPageState = pageState;

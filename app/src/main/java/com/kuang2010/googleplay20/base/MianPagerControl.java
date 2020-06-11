@@ -1,12 +1,16 @@
 package com.kuang2010.googleplay20.base;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.SystemClock;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 
 import com.kuang2010.googleplay20.R;
+import com.kuang2010.googleplay20.factory.ThreadPoolExecutorProxyFactory;
 
 import androidx.annotation.NonNull;
 
@@ -14,7 +18,11 @@ import androidx.annotation.NonNull;
  * author: kuangzeyu2019
  * date: 2020/6/9
  * time: 19:24
- * desc:
+ * desc: 放置4个常见的页面
+ * 	 ① 加载页面
+ * 	 ② 错误页面
+ * 	 ③ 空页面
+ * 	 ④ 成功页面
  */
 public abstract class MianPagerControl extends FrameLayout {
 
@@ -41,6 +49,7 @@ public abstract class MianPagerControl extends FrameLayout {
         super(context);
         mContext = context;
         initCommonView();
+//        setBackgroundColor(Color.RED);
     }
 
     private void initCommonView() {
@@ -94,10 +103,16 @@ public abstract class MianPagerControl extends FrameLayout {
     }
 
     private Handler mHandler = new Handler();
+    /**
+     * @des 触发异步加载数据
+     * @call 外界需要触发加载数据的时候调用该方法
+     */
     public void triggerLoadData(){
         if (mPageState != PageState.STATE_SUCCESS && mPageState != PageState.STATE_LOADING){
             mPageState = PageState.STATE_LOADING;
             refreshUiByState();
+
+            ThreadPoolExecutorProxyFactory.createNormalThreadPoolExecutorProxy().submit(new TestLoadDataTask());
 
             initData(new ILoadDataFinishCallBack() {
                 @Override
@@ -130,4 +145,17 @@ public abstract class MianPagerControl extends FrameLayout {
         void onPageStateResult(PageState pageState);
     }
 
+    private class TestLoadDataTask implements Runnable {
+        @Override
+        public void run() {
+            SystemClock.sleep(2000);
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    Log.d("tagtag","测试测试加载数据完成，刷新UI");
+                }
+            });
+
+        }
+    }
 }

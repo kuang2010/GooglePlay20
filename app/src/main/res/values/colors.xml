@@ -7,6 +7,7 @@
 
     <color name="white">#FFFFFF</color>
     <color name="black">#55000000</color>
+    <color name="translate">#00000000</color>
 
     <color name="tab_indicator_selected">#6666FF</color>
     <color name="tab_text_selected">#6666FF</color>

@@ -18,6 +18,9 @@ import com.kuang2010.googleplay20.fragment.HomeFragment;
 import com.kuang2010.googleplay20.fragment.HotFragment;
 import com.kuang2010.googleplay20.fragment.RecommendFragment;
 import com.kuang2010.googleplay20.fragment.SubjectFragment;
+import com.kuang2010.googleplay20.fragment.TestFragment;
+
+import org.xutils.x;
 
 import java.util.ArrayList;
 
@@ -31,9 +34,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        initXutil();
         initView();
         initData();// 创建Fragement的过程需要时间(视图,loadingpager)
         initEvent();
+    }
+
+    private void initXutil() {
+        x.Ext.init(getApplication());
     }
 
     private void initEvent() {
@@ -96,6 +104,8 @@ public class MainActivity extends AppCompatActivity {
         mTabFragmentBeans.add(new TabFragmentBean(new RecommendFragment(), tabTitles[4]));
         mTabFragmentBeans.add(new TabFragmentBean(new CategoryFragment(), tabTitles[5]));
         mTabFragmentBeans.add(new TabFragmentBean(new HotFragment(), tabTitles[6]));
+        mTabFragmentBeans.add(new TabFragmentBean(new TestFragment(), tabTitles[7]));
+
         pagerAdapter.setDatas(mTabFragmentBeans);
 
 //        for (int i=0;i<tabTitles.length;i++){

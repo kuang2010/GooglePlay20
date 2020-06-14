@@ -5,10 +5,18 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
 
+import com.kuang2010.googleplay20.adapter.GameAdapter;
 import com.kuang2010.googleplay20.base.BaseFragment;
 import com.kuang2010.googleplay20.base.MianPagerControl;
+import com.kuang2010.googleplay20.base.SuperLoadBaseProtocol;
+import com.kuang2010.googleplay20.bean.AppInfoBean;
+import com.kuang2010.googleplay20.factory.RecyclerViewFactory;
+import com.kuang2010.googleplay20.protocol.GameProtocol;
 
+import java.util.List;
 import java.util.Random;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * author: kuangzeyu2019
@@ -17,32 +25,29 @@ import java.util.Random;
  * desc: 游戏
  */
 public class GameFragment extends BaseFragment {
+    List<AppInfoBean> mAppInfoBeans;
     @Override
     protected void initData(final MianPagerControl.ILoadDataFinishPageStateCallBack callBack) {
-        new Thread(){
+        GameProtocol gameProtocol = new GameProtocol();
+        gameProtocol.loadData(0, callBack, new SuperLoadBaseProtocol.OnLoadDataResultListener<AppInfoBean>() {
             @Override
-            public void run() {
-                super.run();
-                SystemClock.sleep(2000);
+            public void setItemBeans(List<AppInfoBean> appInfoBeans) {
+                mAppInfoBeans = appInfoBeans;
+            }
 
-                MianPagerControl.PageState[] pageStates = new MianPagerControl.PageState[]{
-                        MianPagerControl.PageState.STATE_SUCCESS,
-                        MianPagerControl.PageState.STATE_ERROR,
-                        MianPagerControl.PageState.STATE_EMPTY,
-                };
-                Random random = new Random();
-                int index = random.nextInt(pageStates.length) ;
-                callBack.setLoadingFinishPageStateAndRefreshUi(pageStates[index]);
+            @Override
+            public void setLunboPics(List<String> mPictures) {
 
             }
-        }.start();
+        },null);
     }
 
     @Override
     protected View initSuccessView() {
-        TextView tv = new TextView(mContext);
-        tv.setText(this.getClass().getSimpleName());
-        tv.setGravity(Gravity.CENTER);
-        return tv;
+        RecyclerView rv = RecyclerViewFactory.createRecyclerView(mContext);
+        GameAdapter adapter = new GameAdapter(mContext);
+        rv.setAdapter(adapter);
+        adapter.setItemBeans(mAppInfoBeans);
+        return rv;
     }
 }

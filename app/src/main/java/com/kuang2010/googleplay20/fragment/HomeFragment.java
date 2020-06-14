@@ -107,6 +107,7 @@ public class HomeFragment extends BaseFragment {
         HomeRvAdapter adapter = new HomeRvAdapter(mContext,mHasMoreData);
         rv.setAdapter(adapter);
         adapter.setItemBeans(mAppInfoBeans);
+        adapter.setLunboDatas(mPictures);
         return rv;
     }
 }

@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 import com.kuang2010.googleplay20.R;
 import com.kuang2010.googleplay20.viewhold.FootViewHold;
+import com.kuang2010.googleplay20.viewhold.LunboViewHold;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -91,7 +92,7 @@ public abstract class BaseRvAdapter<ItemBean> extends RecyclerView.Adapter<BaseV
     public BaseViewHold onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         BaseViewHold viewHold = null;
         if (viewType == ITEMTYPE_LUNBO){
-            //viewHold = new LunboViewHold(LayoutInflater.from(mContext).inflate())
+            viewHold = new LunboViewHold(mContext,LayoutInflater.from(mContext).inflate(R.layout.item_lunbo,parent,false));
         }else if (viewType == ITEMTYPE_ITEMINFO){
             viewHold = getItemInfoViewHold(parent);//new AppInfoViewHold(mContext,LayoutInflater.from(mContext).inflate(R.layout.item_home_info,parent,false));
         }else if (viewType == ITEMTYPE_FOOT){

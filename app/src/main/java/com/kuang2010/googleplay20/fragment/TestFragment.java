@@ -19,7 +19,7 @@ import java.util.Random;
 public class TestFragment extends BaseFragment {
 
     @Override
-    protected void initData(final MianPagerControl.ILoadDataFinishCallBack callBack) {
+    protected void initData(final MianPagerControl.ILoadDataFinishPageStateCallBack callBack) {
         new Thread(){
             @Override
             public void run() {
@@ -33,7 +33,7 @@ public class TestFragment extends BaseFragment {
                 };
                 Random random = new Random();
                 int index = random.nextInt(pageStates.length) ;
-                callBack.onPageStateResult(pageStates[index]);
+                callBack.setLoadingFinishPageStateAndRefreshUi(pageStates[index]);
 
             }
         }.start();

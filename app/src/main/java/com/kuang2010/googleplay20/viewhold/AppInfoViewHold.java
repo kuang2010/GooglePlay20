@@ -20,8 +20,8 @@ import androidx.annotation.NonNull;
 
 /**
  * author: kuangzeyu2019
- * date: 2020/6/11
- * time: 15:15
+ * date: 2020/6/13
+ * time: 11:50
  * desc:
  */
 public class AppInfoViewHold extends BaseViewHold<AppInfoBean> {
@@ -33,7 +33,7 @@ public class AppInfoViewHold extends BaseViewHold<AppInfoBean> {
     RatingBar mRbStars;
 
     @ViewInject(R.id.item_appinfo_tv_des)
-    TextView	mTvDes;
+    TextView mTvDes;
 
     @ViewInject(R.id.item_appinfo_tv_size)
     TextView	mTvSize;

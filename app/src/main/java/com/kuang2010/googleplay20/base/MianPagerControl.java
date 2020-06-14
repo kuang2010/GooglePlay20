@@ -1,7 +1,6 @@
 package com.kuang2010.googleplay20.base;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.SystemClock;
@@ -114,9 +113,9 @@ public abstract class MianPagerControl extends FrameLayout {
 
             ThreadPoolExecutorProxyFactory.createNormalThreadPoolExecutorProxy().submit(new TestLoadDataTask());
 
-            initData(new ILoadDataFinishCallBack() {//(线程+接口回调) 实现先数据再逻辑的异步加载
+            initData(new ILoadDataFinishPageStateCallBack() {//(线程+接口回调) 实现先数据再逻辑的异步加载
                 @Override
-                public void onPageStateResult(PageState pageState) {
+                public void setLoadingFinishPageStateAndRefreshUi(PageState pageState) {
                     mPageState = pageState;
                     if (Looper.myLooper() == Looper.getMainLooper()){
                         refreshUiByState();
@@ -136,13 +135,13 @@ public abstract class MianPagerControl extends FrameLayout {
     }
 
     protected abstract View initSuccessView();
-    protected abstract void initData(ILoadDataFinishCallBack callBack);
+    protected abstract void initData(ILoadDataFinishPageStateCallBack callBack);
 
     /**
-     * 加载数据完成后的回调，用于刷新UI
+     * 首次加载数据完成后的页面状态回调，用于通知更新页面UI
      * */
-    public interface ILoadDataFinishCallBack {
-        void onPageStateResult(PageState pageState);
+    public interface ILoadDataFinishPageStateCallBack {
+        void setLoadingFinishPageStateAndRefreshUi(PageState pageState);
     }
 
     private class TestLoadDataTask implements Runnable {

@@ -1,14 +1,19 @@
 package com.kuang2010.googleplay20.fragment;
 
-import android.os.SystemClock;
-import android.view.Gravity;
 import android.view.View;
-import android.widget.TextView;
 
+import com.kuang2010.googleplay20.adapter.AppAdapter;
 import com.kuang2010.googleplay20.base.BaseFragment;
+import com.kuang2010.googleplay20.base.BaseProtocol;
 import com.kuang2010.googleplay20.base.MianPagerControl;
+import com.kuang2010.googleplay20.base.SuperLoadBaseProtocol;
+import com.kuang2010.googleplay20.bean.AppInfoBean;
+import com.kuang2010.googleplay20.factory.RecyclerViewFactory;
+import com.kuang2010.googleplay20.protocol.AppLoadProtocol;
 
-import java.util.Random;
+import java.util.List;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * author: kuangzeyu2019
@@ -17,32 +22,35 @@ import java.util.Random;
  * desc: 应用
  */
 public class AppFragment extends BaseFragment {
+    List<AppInfoBean> mAppInfoBeans;
+    boolean mHasMoreData;
     @Override
-    protected void initData(final MianPagerControl.ILoadDataFinishCallBack callBack) {
-        new Thread(){
+    protected void initData(final MianPagerControl.ILoadDataFinishPageStateCallBack callBack) {
+        AppLoadProtocol appLoadProtocol = new AppLoadProtocol();
+        appLoadProtocol.loadData(0, callBack, new SuperLoadBaseProtocol.OnLoadDataResultListener<AppInfoBean>() {
             @Override
-            public void run() {
-                super.run();
-                SystemClock.sleep(2000);
+            public void setItemBeans(List<AppInfoBean> appInfoBeans) {
+                mAppInfoBeans = appInfoBeans;
+            }
 
-                MianPagerControl.PageState[] pageStates = new MianPagerControl.PageState[]{
-                        MianPagerControl.PageState.STATE_SUCCESS,
-                        MianPagerControl.PageState.STATE_ERROR,
-                        MianPagerControl.PageState.STATE_EMPTY,
-                };
-                Random random = new Random();
-                int index = random.nextInt(pageStates.length) ;
-                callBack.onPageStateResult(pageStates[index]);
+            @Override
+            public void setLunboPics(List<String> mPictures) {
 
             }
-        }.start();
+        }, new BaseProtocol.OnHasMoreDataListener() {
+            @Override
+            public void setHasMoreData(boolean hasMoreData) {
+                mHasMoreData = hasMoreData;
+            }
+        });
     }
 
     @Override
     protected View initSuccessView() {
-        TextView tv = new TextView(mContext);
-        tv.setText(this.getClass().getSimpleName());
-        tv.setGravity(Gravity.CENTER);
-        return tv;
+        RecyclerView rv = RecyclerViewFactory.createRecyclerView(mContext);
+        AppAdapter adapter = new AppAdapter(mContext,mHasMoreData);
+        rv.setAdapter(adapter);
+        adapter.setItemBeans(mAppInfoBeans);
+        return rv;
     }
 }

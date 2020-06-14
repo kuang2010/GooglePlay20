@@ -44,7 +44,7 @@ public abstract class BaseFragment extends Fragment {
                 }
 
                 @Override
-                protected void initData(ILoadDataFinishCallBack callBack) {
+                protected void initData(ILoadDataFinishPageStateCallBack callBack) {
                     BaseFragment.this.initData(callBack);
                 }
 
@@ -60,7 +60,7 @@ public abstract class BaseFragment extends Fragment {
         return mMianPagerControl;
     }
 
-    protected abstract void initData(MianPagerControl.ILoadDataFinishCallBack callBack);
+    protected abstract void initData(MianPagerControl.ILoadDataFinishPageStateCallBack callBack);
 
     protected abstract View initSuccessView();
 }

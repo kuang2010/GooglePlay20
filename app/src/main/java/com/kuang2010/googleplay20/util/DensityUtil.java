@@ -8,7 +8,7 @@ public class DensityUtil {
      */  
     public static int dip2px(Context context, float dpValue) {  
         final float scale = context.getResources().getDisplayMetrics().density;
-        return (int) (dpValue * scale + 0.5f);  
+        return (int) (dpValue * scale + 0.5f);  //float 转 int 加上0.5f 可以减少精度损失（四舍五入）
     }  
   
     /** 
@@ -16,6 +16,6 @@ public class DensityUtil {
      */  
     public static int px2dip(Context context, float pxValue) {  
         final float scale = context.getResources().getDisplayMetrics().density;  
-        return (int) (pxValue / scale + 0.5f);  
+        return (int) (pxValue / scale + 0.5f);  //float 转 int 加上0.5f 可以减少精度损失（四舍五入）
     }  
 }

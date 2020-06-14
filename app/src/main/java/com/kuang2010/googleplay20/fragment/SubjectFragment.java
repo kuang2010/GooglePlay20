@@ -1,14 +1,11 @@
 package com.kuang2010.googleplay20.fragment;
 
-import android.os.SystemClock;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
 
 import com.kuang2010.googleplay20.base.BaseFragment;
 import com.kuang2010.googleplay20.base.MianPagerControl;
-
-import java.util.Random;
 
 /**
  * author: kuangzeyu2019
@@ -18,7 +15,7 @@ import java.util.Random;
  */
 public class SubjectFragment extends BaseFragment {
     @Override
-    protected void initData(final MianPagerControl.ILoadDataFinishCallBack callBack) {
+    protected void initData(final MianPagerControl.ILoadDataFinishPageStateCallBack callBack) {
 
     }
 

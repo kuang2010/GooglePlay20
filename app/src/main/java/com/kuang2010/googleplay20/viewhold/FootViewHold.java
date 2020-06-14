@@ -5,7 +5,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.kuang2010.googleplay20.R;
-import com.kuang2010.googleplay20.adapter.HomeRvAdapter.LoadState;
+import com.kuang2010.googleplay20.base.BaseRvAdapter;
 import com.kuang2010.googleplay20.base.BaseViewHold;
 
 import org.xutils.view.annotation.ViewInject;
@@ -20,7 +20,7 @@ import androidx.annotation.NonNull;
  * time: 16:15
  * desc:
  */
-public class FootViewHold extends BaseViewHold<LoadState> {
+public class FootViewHold extends BaseViewHold<BaseRvAdapter.LoadingState> {
 
     @ViewInject(R.id.item_loadmore_container_loading)
     LinearLayout mContainerLoading;
@@ -34,7 +34,7 @@ public class FootViewHold extends BaseViewHold<LoadState> {
     }
 
     @Override
-    public void setData(LoadState loadState) {
+    public void setData(BaseRvAdapter.LoadingState loadState) {
         // 隐藏所有
         mContainerLoading.setVisibility(8);
         mContainerRetry.setVisibility(8);
@@ -46,7 +46,7 @@ public class FootViewHold extends BaseViewHold<LoadState> {
             case STATE_LOAD_ERROR:// 显示重试视图
                 mContainerRetry.setVisibility(0);
                 break;
-            case STATE_GONE:// 啥也不显示
+            case STATE_FINISH_GONE:// 啥也不显示
                 break;
 
             default:

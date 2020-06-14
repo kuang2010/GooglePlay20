@@ -13,10 +13,10 @@ import androidx.recyclerview.widget.RecyclerView;
  * time: 16:12
  * desc:
  */
-public abstract class BaseViewHold<T> extends RecyclerView.ViewHolder {
+public abstract class BaseViewHold<ItemBean> extends RecyclerView.ViewHolder {
     public BaseViewHold(@NonNull View itemView) {
         super(itemView);
     }
 
-    public abstract void setData(T t);
+    public abstract void setData(ItemBean t);
 }

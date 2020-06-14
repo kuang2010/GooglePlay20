@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
  * date: 2020/6/11
  * time: 16:12
  * desc:
+ * ItemBean是接口返回的所有数据里的一种bean数据类型
  */
 public abstract class BaseViewHold<ItemBean> extends RecyclerView.ViewHolder {
     public BaseViewHold(@NonNull View itemView) {

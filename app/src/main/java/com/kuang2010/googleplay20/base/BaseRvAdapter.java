@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
  * date: 2020/6/11
  * time: 15:13
  * desc: 可以接收轮播图数据、一般条目数据、下拉加载更多的RecyclerView.Adapter
+ * ItemBean是接口返回的所有数据里的一种bean数据类型
  */
 public abstract class BaseRvAdapter<ItemBean> extends RecyclerView.Adapter<BaseViewHold<ItemBean>> {
 

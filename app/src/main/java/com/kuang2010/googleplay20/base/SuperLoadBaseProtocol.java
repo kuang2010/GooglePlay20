@@ -12,7 +12,9 @@ import java.util.List;
  * time: 17:56
  * desc: 整合LoadMoreBaseProtocol与 LoadBaseProtocol
  * 完成首次加载数据和加载更多的数据的网络协议
- * T有可能是集合，有可能是bean
+ *
+ * T是接口返回的所有数据类型，有可能是集合，有可能是bean。
+ * ItemBean是接口返回的所有数据里的一种bean数据类型
  */
 public abstract class SuperLoadBaseProtocol<T,ItemBean> extends BaseProtocol{
 

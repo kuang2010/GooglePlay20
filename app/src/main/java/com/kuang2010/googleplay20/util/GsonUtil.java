@@ -41,8 +41,8 @@ public class GsonUtil {
 
     /**
      * 将 json字符串转换成 javabean
-     *
-     * @param jsonString
+     * Bean解析
+     * @param jsonString {"":"","":{},"":[]}
      * @param cls
      * @return
      */
@@ -56,8 +56,8 @@ public class GsonUtil {
 
     /**
      * 将json字符串转换成List
-     *
-     * @param json
+     * 泛型解析
+     * @param json [{},{}]
      * @param cls
      * @return
      */
@@ -73,10 +73,27 @@ public class GsonUtil {
     }
 
 
+    /**
+     * 将json字符串转换成List
+     * 泛型解析
+     * @param json  [{},{}]
+     * @param cls
+     * @return
+     */
     public static <T> List<T> jsonType2List(String json, Class<T> cls){
         return gson.fromJson(json, new TypeToken<List<T>>() {}.getType());
     }
 
+
+    /**
+     * 将json字符串转换成 map
+     * 泛型解析
+     * @param json  {"":"","":{},"":[]}
+     * @return
+     */
+    public static <K,V> HashMap<K,V> jsonType2Map(String json,Class<K> kClass,Class<V> vClass){
+        return  gson.fromJson(json,new TypeToken<HashMap<K,V>>(){}.getType());
+    }
 
 
     /**

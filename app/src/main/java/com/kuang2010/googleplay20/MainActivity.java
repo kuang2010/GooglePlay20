@@ -19,10 +19,12 @@ import com.kuang2010.googleplay20.fragment.HotFragment;
 import com.kuang2010.googleplay20.fragment.RecommendFragment;
 import com.kuang2010.googleplay20.fragment.SubjectFragment;
 import com.kuang2010.googleplay20.fragment.TestFragment;
+import com.kuang2010.googleplay20.util.GsonUtil;
 
 import org.xutils.x;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -38,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
         initView();
         initData();// 创建Fragement的过程需要时间(视图,loadingpager)
         initEvent();
+
     }
 
     private void initXutil() {

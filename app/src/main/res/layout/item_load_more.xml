@@ -17,6 +17,7 @@
         android:orientation="horizontal" >
 
         <ProgressBar
+            android:indeterminateDrawable="@drawable/layerlist_progress_small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 

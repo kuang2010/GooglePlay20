@@ -125,7 +125,7 @@ public abstract class BaseRvAdapter<ItemBean> extends RecyclerView.Adapter<BaseV
             if (hasMoreData() && mLoadState != LoadingState.STATE_LOADING){
                 triggerLoadMoreData(holder);
             }else {
-                mLoadState = LoadingState.STATE_FINISH_GONE;
+//                mLoadState = LoadingState.STATE_FINISH_GONE;
                 holder.setData(mLoadState);
             }
             holder.itemView.findViewById(R.id.item_loadmore_container_retry).setOnClickListener(new View.OnClickListener() {

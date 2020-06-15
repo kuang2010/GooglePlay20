@@ -3,6 +3,7 @@ package com.kuang2010.googleplay20.base;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.SystemClock;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,7 +51,13 @@ public abstract class BaseRvAdapter<ItemBean> extends RecyclerView.Adapter<BaseV
         if (itemBeans!=null && itemBeans.size()>0){
             mItemBeans.addAll(itemBeans);
         }
-        notifyDataSetChanged();
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                notifyDataSetChanged();
+                mHandler.removeCallbacks(this);
+            }
+        });
     }
 
     /**
@@ -158,9 +165,22 @@ public abstract class BaseRvAdapter<ItemBean> extends RecyclerView.Adapter<BaseV
             @Override
             public void setMoreDatas(List<ItemBean> moreDatas) {
                 if (moreDatas!=null && moreDatas.size()>0){
+                    System.out.println("tagtag:thread1:"+Thread.currentThread().getName());
                     mItemBeans.addAll(moreDatas);
-                    if (Looper.myLooper() == Looper.getMainLooper()){
+                    //if(RecyclerView is computing){xxxx.post}else{notifyDataSetChanged();}
+                    mHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            System.out.println("tagtag:thread2:"+Thread.currentThread().getName());
+                            notifyDataSetChanged();
+                            mHandler.removeCallbacks(this);
+                        }
+                    });
+                    /*if (Looper.myLooper() == Looper.getMainLooper()){
+                        //从缓存取数据时IllegalStateException: Cannot call this method while RecyclerView is computing a layout or add data
+                        //because of circular method call.: notifyDataSetChanged() -> onBindViewHolder() -> notifyDataSetChanged()
                         notifyDataSetChanged();
+                         //if(RecyclerView is computing){xxxx.post}else{notifyDataSetChanged();};
                     }else {
                         mHandler.post(new Runnable() {
                             @Override
@@ -169,7 +189,7 @@ public abstract class BaseRvAdapter<ItemBean> extends RecyclerView.Adapter<BaseV
                                 mHandler.removeCallbacks(this);
                             }
                         });
-                    }
+                    }*/
                 }
             }
         });

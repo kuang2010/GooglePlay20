@@ -16,10 +16,8 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Created by wangkun1_kzx on 2018/3/21.
  * Gson 的工具类
  */
-
 public class GsonUtil {
     private static Gson gson = null;
 

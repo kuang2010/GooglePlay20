@@ -1,9 +1,5 @@
 package com.kuang2010.googleplay20.base;
 
-import android.content.Context;
-import android.os.Environment;
-import android.os.FileUtils;
-import android.os.SystemClock;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -176,7 +172,7 @@ public abstract class BaseProtocol {
                     while (!TextUtils.isEmpty(jsonString)){
                         sb.append(jsonString);
                         jsonString = reader.readLine();
-                        //sb.append(jsonString);//错,要判空null
+                        //sb.append(jsonString);//错,要判空null,否则末尾多出个null
                     }
 
                     //保存一份到内存
@@ -194,7 +190,7 @@ public abstract class BaseProtocol {
     }
 
     /**
-     * 保存数据到本地
+     * 保存数据到本地，缓存数据要保证索引的唯一性
      * @param result jsonString
      */
     private void saveData2Local(String result) {
@@ -228,7 +224,7 @@ public abstract class BaseProtocol {
     }
 
     /**
-     * 保存数据到内存
+     * 保存数据到内存,缓存数据要保证索引的唯一性
      * @param result jsonString
      */
     private void saveData2Memory(String result) {

@@ -3,6 +3,9 @@ package com.kuang2010.googleplay20.util;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -32,7 +35,7 @@ import androidx.annotation.NonNull;
  * 1. 内存获取数据 2. 本地磁盘获取数据 cache 3. 网络获取数据
  *
  * desc: 仿照glide用三级缓存实现显示网络图片，并使用线程池优化多线程访问网络
- *
+ * bug:圆角图片显示有黑色边框
  */
 public class BitmapUtil {
 
@@ -102,6 +105,7 @@ public class BitmapUtil {
 
         @Override
         public void run() {
+            InputStream inputStream = null;
             try {
                 String threadName = Thread.currentThread().getName();
 //                Log.d("BitmapUtil","线程"+threadName+"正在下载图片");
@@ -111,8 +115,9 @@ public class BitmapUtil {
                 connection.setRequestMethod("GET");
                 int code = connection.getResponseCode();
                 if (code == 200){
-                    InputStream inputStream = connection.getInputStream();
+                    inputStream = connection.getInputStream();
                     Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                    bitmap = getBitmap(bitmap);
                     String ivUrl = iv_url.get(mIv);
                     if (mUrl.equals(ivUrl)){
                         displayBitMap(bitmap,mIv);
@@ -128,8 +133,20 @@ public class BitmapUtil {
                 e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
+            }finally {
+                IOUtils.close(inputStream);
             }
         }
+    }
+
+    //解决圆角图标bitmap黑色背景问题
+    private Bitmap getBitmap(Bitmap bitmap){
+        Bitmap newBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(newBitmap);
+        canvas.drawColor(Color.TRANSPARENT);//在newBitmap上画一个透明的背景色
+        Paint paint = new Paint();
+        canvas.drawBitmap(bitmap, 0, 0, paint);
+        return newBitmap;
     }
 
     /**
@@ -159,6 +176,7 @@ public class BitmapUtil {
     }
 
     private synchronized void displayBitMap(Bitmap bitmap, ImageView iv) {
+
         if (Looper.myLooper() == Looper.getMainLooper()){
             //主线程
             iv.setImageBitmap(bitmap);

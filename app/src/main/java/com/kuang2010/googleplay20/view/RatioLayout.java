@@ -13,8 +13,8 @@ import com.kuang2010.googleplay20.R;
  * time: 21:28
  * desc: 在不同分辨率的手机上图片展示变形，是由于控件ImageView的
  * 宽高比与图片本身的宽高比不一样造成的，使用该类能使子控件ImageView等的宽高按已知图片的宽高比例进行不同手机的适配。
- * 0.已知宽度,能够动态计算高度
- * 1.已知高度,能够动态计算宽度
+ * 0.已知宽度,能够动态计算设置高度
+ * 1.已知高度,能够动态计算设置宽度
  */
 public class RatioLayout extends FrameLayout {
 

@@ -61,7 +61,6 @@ public class DetailActivity extends AppCompatActivity {
 
 
     private void startLoadData(LoadingPager.ILoadDataFinishPageStateCallBack callBack) {
-        //callBack.setLoadingFinishPageStateAndRefreshUi(LoadingPager.PageState.STATE_SUCCESS);
 
         DetailPageProtocol detailPageProtocol = new DetailPageProtocol(mPackageName);
         detailPageProtocol.loadCommonLoad(callBack, new SuperLoadBaseProtocol.OnCommonLoadDataResultListener<AppInfoBean>() {

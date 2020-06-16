@@ -10,7 +10,6 @@ import com.kuang2010.googleplay20.util.IOUtils;
 import com.kuang2010.googleplay20.util.Md5Util;
 
 import org.xutils.common.Callback;
-import org.xutils.common.util.KeyValue;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
 
@@ -21,7 +20,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 
@@ -53,7 +51,7 @@ public abstract class BaseProtocol {
         mapParams.put("index",""+index);
 //        params.addQueryStringParameter("index", index + "");
         setParams(mapParams);
-        mSavekey = generateSavekey(url, params);
+        mSavekey = generateSavekey(url, mapParams);
         for (Map.Entry<String,String> entry:mapParams.entrySet()){
             String key = entry.getKey();
             String value = entry.getValue();
@@ -127,16 +125,15 @@ public abstract class BaseProtocol {
         });
     }
 
-
-
-    private String generateSavekey(String url, RequestParams params) {
-        List<KeyValue> bodyParams = params.getBodyParams();
-        for (KeyValue keyValue:bodyParams){
-            String key = keyValue.key;
-            Object value = keyValue.value;
+    //保证缓存数据索引的唯一性
+    private String generateSavekey(String url, HashMap<String,String> params) {
+        StringBuffer sb = new StringBuffer();
+        for (Map.Entry<String,String> entry:params.entrySet()){
+            String key = entry.getKey();
+            String value = entry.getValue();
+            sb.append(key+"."+value);
         }
-
-        return Md5Util.md5Encode(url)+getInterceKey()+"."+params;
+        return Md5Util.md5Encode(url)+getInterceKey()+"."+sb.toString();
     }
 
     private File getCachFile(){

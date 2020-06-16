@@ -123,11 +123,11 @@ public abstract class SuperLoadBaseProtocol<T,ItemBean> extends BaseProtocol{
     }
 
     /**
-     * 子类复写该方法，返回一般的条目数据
+     * 子类复写该方法，从t中解析出一般的条目数据
      * @param t 网络加载到的所有源数据
      * @return 一般的条目数据
      */
-    protected abstract List<ItemBean> getItemBeans(T t);
+    protected List<ItemBean> getItemBeans(T t){return null;};
 
     /**
      * 子类复写该方法，解析网络加载到的json字符串数据

@@ -23,11 +23,6 @@ public class DetailPageProtocol extends SuperLoadBaseProtocol<AppInfoBean,AppInf
     }
 
     @Override
-    protected List<AppInfoBean> getItemBeans(AppInfoBean appInfoBean) {
-        return null;
-    }
-
-    @Override
     protected AppInfoBean parasJsonString(String result) {
         return GsonUtil.json2Bean(result,AppInfoBean.class);
     }
@@ -39,6 +34,7 @@ public class DetailPageProtocol extends SuperLoadBaseProtocol<AppInfoBean,AppInf
 
     @Override
     protected void setParams(HashMap<String, String> params) {
+        params.clear();
         params.put(Constant.APPINFO_PACKAGENAME,mPackageName);
     }
 }

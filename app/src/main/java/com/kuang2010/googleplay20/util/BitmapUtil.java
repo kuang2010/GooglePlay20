@@ -117,7 +117,6 @@ public class BitmapUtil {
                 if (code == 200){
                     inputStream = connection.getInputStream();
                     Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-                    bitmap = getBitmap(bitmap);
                     String ivUrl = iv_url.get(mIv);
                     if (mUrl.equals(ivUrl)){
                         displayBitMap(bitmap,mIv);
@@ -125,6 +124,8 @@ public class BitmapUtil {
                     } else {
                         //网速慢造成的图片错位 不显示图片
                     }
+                    bitmap = getBitmap(bitmap);
+
                     saveBitmap2Memery(mUrl,bitmap);
 
                     saveBitmap2Local(mUrl,bitmap);
@@ -143,7 +144,7 @@ public class BitmapUtil {
     private Bitmap getBitmap(Bitmap bitmap){
         Bitmap newBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(newBitmap);
-        canvas.drawColor(Color.TRANSPARENT);//在newBitmap上画一个透明的背景色
+        canvas.drawColor(Color.WHITE);//在newBitmap上画一个透明的背景色
         Paint paint = new Paint();
         canvas.drawBitmap(bitmap, 0, 0, paint);
         return newBitmap;
@@ -176,14 +177,14 @@ public class BitmapUtil {
     }
 
     private synchronized void displayBitMap(Bitmap bitmap, ImageView iv) {
-
+        Bitmap bitmap1 = getBitmap(bitmap);
         if (Looper.myLooper() == Looper.getMainLooper()){
             //主线程
-            iv.setImageBitmap(bitmap);
+            iv.setImageBitmap(bitmap1);
         }else {
             Message message = mHandler.obtainMessage();
             Ob ob = new Ob();
-            ob.bitmap = bitmap;
+            ob.bitmap = bitmap1;
             ob.iv = iv;
             message.obj = ob;
             mHandler.sendMessage(message);

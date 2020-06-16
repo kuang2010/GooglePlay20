@@ -4,7 +4,7 @@ import android.view.View;
 
 import com.kuang2010.googleplay20.adapter.GameAdapter;
 import com.kuang2010.googleplay20.base.BaseFragment;
-import com.kuang2010.googleplay20.base.MianPagerControl;
+import com.kuang2010.googleplay20.base.LoadingPager;
 import com.kuang2010.googleplay20.base.SuperLoadBaseProtocol;
 import com.kuang2010.googleplay20.bean.AppInfoBean;
 import com.kuang2010.googleplay20.factory.RecyclerViewFactory;
@@ -23,9 +23,9 @@ import androidx.recyclerview.widget.RecyclerView;
 public class GameFragment extends BaseFragment {
     List<AppInfoBean> mAppInfoBeans;
     @Override
-    protected void initData(final MianPagerControl.ILoadDataFinishPageStateCallBack callBack) {
+    protected void initData(final LoadingPager.ILoadDataFinishPageStateCallBack callBack) {
         GameProtocol gameProtocol = new GameProtocol();
-        gameProtocol.loadData(0, callBack, new SuperLoadBaseProtocol.OnLoadItemDataResultListener<AppInfoBean>() {
+        gameProtocol.loadListData(0, callBack, new SuperLoadBaseProtocol.OnLoadItemDataResultListener<AppInfoBean>() {
             @Override
             public void setItemBeans(List<AppInfoBean> appInfoBeans) {
                 mAppInfoBeans = appInfoBeans;

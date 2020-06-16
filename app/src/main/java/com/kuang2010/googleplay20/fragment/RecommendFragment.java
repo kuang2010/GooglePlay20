@@ -1,14 +1,11 @@
 package com.kuang2010.googleplay20.fragment;
 
 import android.graphics.Color;
-import android.os.SystemClock;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
 
-import com.google.android.material.internal.FlowLayout;
 import com.kuang2010.googleplay20.base.BaseFragment;
-import com.kuang2010.googleplay20.base.MianPagerControl;
+import com.kuang2010.googleplay20.base.LoadingPager;
 import com.kuang2010.googleplay20.base.SuperLoadBaseProtocol;
 import com.kuang2010.googleplay20.protocol.RecommendProtocol;
 import com.kuang2010.googleplay20.util.DensityUtil;
@@ -32,9 +29,9 @@ public class RecommendFragment extends BaseFragment {
     List<String> mDatas;
 
     @Override
-    protected void initData(final MianPagerControl.ILoadDataFinishPageStateCallBack callBack) {
+    protected void initData(final LoadingPager.ILoadDataFinishPageStateCallBack callBack) {
         RecommendProtocol recommendProtocol = new RecommendProtocol();
-        recommendProtocol.loadData(0, callBack, new SuperLoadBaseProtocol.OnLoadItemDataResultListener<String>() {
+        recommendProtocol.loadListData(0, callBack, new SuperLoadBaseProtocol.OnLoadItemDataResultListener<String>() {
             @Override
             public void setItemBeans(List<String> strings) {
                 mDatas = strings;

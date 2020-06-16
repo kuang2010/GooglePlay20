@@ -34,18 +34,18 @@ public abstract class LoadBaseProtocol<T,ItemBean> extends BaseProtocol{
     /**
      * 加载数据完成后的回调，用于通知刷新UI
      * */
-    private MianPagerControl.ILoadDataFinishPageStateCallBack callBack;
+    private LoadingPager.ILoadDataFinishPageStateCallBack callBack;
 
 
     @Override
     protected void onCancelled(Callback.CancelledException cex) {
-        callBack.setLoadingFinishPageStateAndRefreshUi(MianPagerControl.PageState.STATE_ERROR);
+        callBack.setLoadingFinishPageStateAndRefreshUi(LoadingPager.PageState.STATE_ERROR);
 
     }
 
     @Override
     protected void onError(Throwable ex, boolean isOnCallback) {
-        callBack.setLoadingFinishPageStateAndRefreshUi(MianPagerControl.PageState.STATE_ERROR);
+        callBack.setLoadingFinishPageStateAndRefreshUi(LoadingPager.PageState.STATE_ERROR);
     }
 
     @Override
@@ -55,14 +55,14 @@ public abstract class LoadBaseProtocol<T,ItemBean> extends BaseProtocol{
         T t = parasJsonString(result);
         if (t==null){
             setHasMoreData(false);
-            callBack.setLoadingFinishPageStateAndRefreshUi(MianPagerControl.PageState.STATE_EMPTY);
+            callBack.setLoadingFinishPageStateAndRefreshUi(LoadingPager.PageState.STATE_EMPTY);
             return;
         }
 //        List<AppInfoBean> appInfoBeans = homeBean.list;
         List<ItemBean> itemBeans = getItemBeans(t);
         if (itemBeans==null || itemBeans.size()==0){
             setHasMoreData(false);
-            callBack.setLoadingFinishPageStateAndRefreshUi(MianPagerControl.PageState.STATE_EMPTY);
+            callBack.setLoadingFinishPageStateAndRefreshUi(LoadingPager.PageState.STATE_EMPTY);
             return;
         }
 
@@ -74,7 +74,7 @@ public abstract class LoadBaseProtocol<T,ItemBean> extends BaseProtocol{
         }
         /*****************走到这里认为还有数据没加载完********************/
         setHasMoreData(true);//首次还有更多数据
-        callBack.setLoadingFinishPageStateAndRefreshUi(MianPagerControl.PageState.STATE_SUCCESS);
+        callBack.setLoadingFinishPageStateAndRefreshUi(LoadingPager.PageState.STATE_SUCCESS);
     }
 
 
@@ -108,7 +108,7 @@ public abstract class LoadBaseProtocol<T,ItemBean> extends BaseProtocol{
      * @param onLoadDataResultListener 加载数据的结果回调,用于获取数据
      * @param onHasMoreDataListener  有更多数据的回调监听,用于判断是否要加载更多数据
      */
-    public void loadData(int index, MianPagerControl.ILoadDataFinishPageStateCallBack callBack, OnLoadDataResultListener<ItemBean> onLoadDataResultListener, OnHasMoreDataListener onHasMoreDataListener) {
+    public void loadData(int index, LoadingPager.ILoadDataFinishPageStateCallBack callBack, OnLoadDataResultListener<ItemBean> onLoadDataResultListener, OnHasMoreDataListener onHasMoreDataListener) {
         super.loadData(index);//0
         this.callBack = callBack;
         mOnLoadDataResultListener = onLoadDataResultListener;

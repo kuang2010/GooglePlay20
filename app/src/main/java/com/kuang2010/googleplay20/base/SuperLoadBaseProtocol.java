@@ -17,7 +17,7 @@ import java.util.List;
  */
 public abstract class SuperLoadBaseProtocol<T,ItemBean> extends BaseProtocol{
 
-    /** 首次加载数据的结果回调,用于获取数据*/
+    /** 首次加载数据的结果回调,用于获取条目数据*/
     private OnLoadItemDataResultListener<ItemBean> mOnLoadItemDataResultListener;
     public interface OnLoadItemDataResultListener<ItemBean>{
         /**
@@ -32,10 +32,20 @@ public abstract class SuperLoadBaseProtocol<T,ItemBean> extends BaseProtocol{
         void setLunboPics(List<String> mPictures);//这个属于子类特有的业务功能，建议不要放进来
     }
 
+    /************************首次加载数据的结果回调,用于获取所有协议数据*****************************/
+    public interface OnCommonLoadDataResultListener<T>{
+        /**
+         * 外界获取所有协议数据
+         * @param t 返回的所有数据
+         */
+        void setResultData(T t);
+    }
+    private OnCommonLoadDataResultListener mOnCommonLoadDataResultListener;
+
     /**
      * 首次加载数据完成后的页面状态回调，用于通知更新页面UI
      * */
-    private MianPagerControl.ILoadDataFinishPageStateCallBack pageStateCallBack;
+    private LoadingPager.ILoadDataFinishPageStateCallBack pageStateCallBack;
 
 
     /**
@@ -46,13 +56,13 @@ public abstract class SuperLoadBaseProtocol<T,ItemBean> extends BaseProtocol{
 
     @Override
     protected void onCancelled(Callback.CancelledException cex) {
-        if (pageStateCallBack!=null)  pageStateCallBack.setLoadingFinishPageStateAndRefreshUi(MianPagerControl.PageState.STATE_ERROR);
+        if (pageStateCallBack!=null)  pageStateCallBack.setLoadingFinishPageStateAndRefreshUi(LoadingPager.PageState.STATE_ERROR);
         if(moreDataAndStateCallBack!=null)  moreDataAndStateCallBack.setLoadingState(BaseRvAdapter.LoadingState.STATE_LOAD_ERROR);
     }
 
     @Override
     protected void onError(Throwable ex, boolean isOnCallback) {
-        if (pageStateCallBack!=null)pageStateCallBack.setLoadingFinishPageStateAndRefreshUi(MianPagerControl.PageState.STATE_ERROR);
+        if (pageStateCallBack!=null)pageStateCallBack.setLoadingFinishPageStateAndRefreshUi(LoadingPager.PageState.STATE_ERROR);
         if (moreDataAndStateCallBack!=null)moreDataAndStateCallBack.setLoadingState(BaseRvAdapter.LoadingState.STATE_LOAD_ERROR);
     }
 
@@ -63,17 +73,24 @@ public abstract class SuperLoadBaseProtocol<T,ItemBean> extends BaseProtocol{
         T t = parasJsonString(result);
         if (t==null){
             setHasMoreData(false);
-            if (pageStateCallBack!=null)pageStateCallBack.setLoadingFinishPageStateAndRefreshUi(MianPagerControl.PageState.STATE_EMPTY);
+            if (pageStateCallBack!=null)pageStateCallBack.setLoadingFinishPageStateAndRefreshUi(LoadingPager.PageState.STATE_EMPTY);
             if (moreDataAndStateCallBack!=null)moreDataAndStateCallBack.setLoadingState(BaseRvAdapter.LoadingState.STATE_FINISH_GONE);
             return;
         }
 
+        if (mOnCommonLoadDataResultListener != null){
+            mOnCommonLoadDataResultListener.setResultData(t);
+            if (pageStateCallBack!=null){
+                pageStateCallBack.setLoadingFinishPageStateAndRefreshUi(LoadingPager.PageState.STATE_SUCCESS);
+            }
+            return;
+        }
 
 //        List<AppInfoBean> appInfoBeans = homeBean.list;
         List<ItemBean> itemBeans = getItemBeans(t);
         if (itemBeans==null || itemBeans.size()==0){
             setHasMoreData(false);
-            if (pageStateCallBack!=null)pageStateCallBack.setLoadingFinishPageStateAndRefreshUi(MianPagerControl.PageState.STATE_EMPTY);
+            if (pageStateCallBack!=null)pageStateCallBack.setLoadingFinishPageStateAndRefreshUi(LoadingPager.PageState.STATE_EMPTY);
             if (moreDataAndStateCallBack!=null)moreDataAndStateCallBack.setLoadingState(BaseRvAdapter.LoadingState.STATE_FINISH_GONE);
             return;
         }
@@ -90,7 +107,7 @@ public abstract class SuperLoadBaseProtocol<T,ItemBean> extends BaseProtocol{
         if (moreDataAndStateCallBack!=null)moreDataAndStateCallBack.setLoadingState(BaseRvAdapter.LoadingState.STATE_FINISH_GONE);
         if (moreDataAndStateCallBack!=null)moreDataAndStateCallBack.setMoreDatas(itemBeans);
 
-        if (pageStateCallBack!=null)pageStateCallBack.setLoadingFinishPageStateAndRefreshUi(MianPagerControl.PageState.STATE_SUCCESS);
+        if (pageStateCallBack!=null)pageStateCallBack.setLoadingFinishPageStateAndRefreshUi(LoadingPager.PageState.STATE_SUCCESS);
 
 
     }
@@ -119,14 +136,26 @@ public abstract class SuperLoadBaseProtocol<T,ItemBean> extends BaseProtocol{
      */
     protected abstract T parasJsonString(String result) ;
 
+
     /**
-     * 外界调用，首次加载数据
+     * 外界调用，加载数据获取所有协议数据
+     * @param pageStateCallBack 加载数据完成后的回调，用于刷新UI
+     * @param onCommonLoadDataResultListener 加载数据的结果回调,用于获取所有协议数据
+     */
+    public void loadCommonLoad(LoadingPager.ILoadDataFinishPageStateCallBack pageStateCallBack, OnCommonLoadDataResultListener onCommonLoadDataResultListener){
+        this.pageStateCallBack = pageStateCallBack;
+        mOnCommonLoadDataResultListener = onCommonLoadDataResultListener;
+        super.loadData(0);
+    }
+
+    /**
+     * 外界调用，首次加载条目数据{[]},[]
      * @param index 分页加载数据的下标
      * @param pageStateCallBack 加载数据完成后的回调，用于刷新UI
      * @param onLoadItemDataResultListener 加载数据的结果回调,用于获取首次的结果数据
      * @param onHasMoreDataListener  有更多数据的回调监听,用于判断是否要加载更多数据
      */
-    public void loadData(int index, MianPagerControl.ILoadDataFinishPageStateCallBack pageStateCallBack, OnLoadItemDataResultListener<ItemBean> onLoadItemDataResultListener, OnHasMoreDataListener onHasMoreDataListener) {
+    public void loadListData(int index, LoadingPager.ILoadDataFinishPageStateCallBack pageStateCallBack, OnLoadItemDataResultListener<ItemBean> onLoadItemDataResultListener, OnHasMoreDataListener onHasMoreDataListener) {
         this.pageStateCallBack = pageStateCallBack;
         mOnLoadItemDataResultListener = onLoadItemDataResultListener;
         mOnHasMoreDataListener = onHasMoreDataListener;
@@ -139,7 +168,7 @@ public abstract class SuperLoadBaseProtocol<T,ItemBean> extends BaseProtocol{
      * @param moreDataAndStateCallBack 下拉加载更多数据的回调,用于获取更多的结果数据
      * @param onHasMoreDataListener  有更多数据的回调监听,用于判断是否要加载更多数据
      */
-    public void loadMoreData(int index,BaseRvAdapter.ILoadMoreDataAndStateCallBack moreDataAndStateCallBack,  OnHasMoreDataListener onHasMoreDataListener){
+    public void loadMoreListData(int index, BaseRvAdapter.ILoadMoreDataAndStateCallBack moreDataAndStateCallBack, OnHasMoreDataListener onHasMoreDataListener){
         this.moreDataAndStateCallBack = moreDataAndStateCallBack;
         mOnHasMoreDataListener = onHasMoreDataListener;
         super.loadData(index);

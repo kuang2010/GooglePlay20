@@ -19,12 +19,10 @@ import com.kuang2010.googleplay20.fragment.HotFragment;
 import com.kuang2010.googleplay20.fragment.RecommendFragment;
 import com.kuang2010.googleplay20.fragment.SubjectFragment;
 import com.kuang2010.googleplay20.fragment.TestFragment;
-import com.kuang2010.googleplay20.util.GsonUtil;
 
 import org.xutils.x;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -54,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
             public void onGlobalLayout() {
                 mVp_main.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 BaseFragment baseFragment = mTabFragmentBeans.get(0).getBaseFragment();
-                baseFragment.getMianPagerControl().triggerLoadData();//需要判断MianPagerControl()是否为空
+                baseFragment.getLoadingPager().triggerLoadData();//需要判断MianPagerControl()是否为空
             }
         });
         mVp_main.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -66,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onPageSelected(int position) {
                 BaseFragment baseFragment = mTabFragmentBeans.get(position).getBaseFragment();
-                baseFragment.getMianPagerControl().triggerLoadData();//需要判断MianPagerControl()是否为空
+                baseFragment.getLoadingPager().triggerLoadData();//需要判断MianPagerControl()是否为空
             }
 
             @Override

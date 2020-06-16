@@ -10,6 +10,7 @@ import com.kuang2010.googleplay20.util.IOUtils;
 import com.kuang2010.googleplay20.util.Md5Util;
 
 import org.xutils.common.Callback;
+import org.xutils.common.util.KeyValue;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
 
@@ -19,6 +20,9 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -44,8 +48,17 @@ public abstract class BaseProtocol {
      */
     protected void loadData(int index) {// final BaseRvAdapter.ILoadMoreDataCallBack callBack
         String url = Constant.URlS.BASEURL + getInterceKey();//"home"
-
-        mSavekey = generateSavekey(url, index);
+        RequestParams params = new RequestParams();
+        HashMap<String,String> mapParams = new HashMap<>();
+        mapParams.put("index",""+index);
+//        params.addQueryStringParameter("index", index + "");
+        setParams(mapParams);
+        mSavekey = generateSavekey(url, params);
+        for (Map.Entry<String,String> entry:mapParams.entrySet()){
+            String key = entry.getKey();
+            String value = entry.getValue();
+            params.addQueryStringParameter(key,value);
+        }
         String result = getDataFromMemory();
         if (!TextUtils.isEmpty(result)){
             Log.d("BaseProtocol","###从内存加载数据--->"+mSavekey);
@@ -60,10 +73,8 @@ public abstract class BaseProtocol {
             return;
         }
 
-        RequestParams params = new RequestParams();
-        params.setUri(url);
 
-        params.addQueryStringParameter("index", index + "");
+        params.setUri(url);
         params.setConnectTimeout(3000);
         x.http().get(params, new Callback.CommonCallback<String>() {
             @Override
@@ -118,7 +129,13 @@ public abstract class BaseProtocol {
 
 
 
-    private String generateSavekey(String url, int params) {
+    private String generateSavekey(String url, RequestParams params) {
+        List<KeyValue> bodyParams = params.getBodyParams();
+        for (KeyValue keyValue:bodyParams){
+            String key = keyValue.key;
+            Object value = keyValue.value;
+        }
+
         return Md5Util.md5Encode(url)+getInterceKey()+"."+params;
     }
 
@@ -239,6 +256,14 @@ public abstract class BaseProtocol {
         if (mOnHasMoreDataListener !=null){
             mOnHasMoreDataListener.setHasMoreData(hasMoreData);
         }
+    }
+
+    /**
+     * 子类实现，添加其他的请求参数
+     * @param params
+     */
+    protected void setParams(HashMap<String, String> params) {
+
     }
 
 

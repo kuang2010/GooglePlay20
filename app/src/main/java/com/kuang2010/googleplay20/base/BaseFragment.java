@@ -19,11 +19,11 @@ import androidx.fragment.app.Fragment;
  */
 public abstract class BaseFragment extends Fragment {
 
-    private MianPagerControl mMianPagerControl;
+    private LoadingPager mLoadingPager;
     public Context mContext;
 
-    public MianPagerControl getMianPagerControl() {
-        return mMianPagerControl;
+    public LoadingPager getLoadingPager() {
+        return mLoadingPager;
 
     }
 
@@ -36,8 +36,8 @@ public abstract class BaseFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        if (mMianPagerControl==null){
-            mMianPagerControl = new MianPagerControl(mContext) {
+        if (mLoadingPager ==null){
+            mLoadingPager = new LoadingPager(mContext) {
                 @Override
                 protected View initSuccessView() {
                     return BaseFragment.this.initSuccessView();
@@ -50,17 +50,17 @@ public abstract class BaseFragment extends Fragment {
 
             };
         }
-        if (mMianPagerControl.getParent()!=null){
-            ViewParent parent = mMianPagerControl.getParent();
+        if (mLoadingPager.getParent()!=null){
+            ViewParent parent = mLoadingPager.getParent();
             if (parent instanceof ViewGroup){
-                ((ViewGroup) parent).removeView(mMianPagerControl);
+                ((ViewGroup) parent).removeView(mLoadingPager);
             }
         }
 //        mMianPagerControl.triggerLoadData();  //优化数据触发加载时机 selectPosition
-        return mMianPagerControl;
+        return mLoadingPager;
     }
 
-    protected abstract void initData(MianPagerControl.ILoadDataFinishPageStateCallBack callBack);
+    protected abstract void initData(LoadingPager.ILoadDataFinishPageStateCallBack callBack);
 
     protected abstract View initSuccessView();
 }

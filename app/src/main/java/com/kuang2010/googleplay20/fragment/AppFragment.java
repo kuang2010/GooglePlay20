@@ -5,7 +5,7 @@ import android.view.View;
 import com.kuang2010.googleplay20.adapter.AppAdapter;
 import com.kuang2010.googleplay20.base.BaseFragment;
 import com.kuang2010.googleplay20.base.BaseProtocol;
-import com.kuang2010.googleplay20.base.MianPagerControl;
+import com.kuang2010.googleplay20.base.LoadingPager;
 import com.kuang2010.googleplay20.base.SuperLoadBaseProtocol;
 import com.kuang2010.googleplay20.bean.AppInfoBean;
 import com.kuang2010.googleplay20.factory.RecyclerViewFactory;
@@ -25,9 +25,9 @@ public class AppFragment extends BaseFragment {
     List<AppInfoBean> mAppInfoBeans;
     boolean mHasMoreData;
     @Override
-    protected void initData(final MianPagerControl.ILoadDataFinishPageStateCallBack callBack) {
+    protected void initData(final LoadingPager.ILoadDataFinishPageStateCallBack callBack) {
         AppLoadProtocol appLoadProtocol = new AppLoadProtocol();
-        appLoadProtocol.loadData(0, callBack, new SuperLoadBaseProtocol.OnLoadItemDataResultListener<AppInfoBean>() {
+        appLoadProtocol.loadListData(0, callBack, new SuperLoadBaseProtocol.OnLoadItemDataResultListener<AppInfoBean>() {
             @Override
             public void setItemBeans(List<AppInfoBean> appInfoBeans) {
                 mAppInfoBeans = appInfoBeans;

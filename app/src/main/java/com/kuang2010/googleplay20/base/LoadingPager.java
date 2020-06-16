@@ -23,7 +23,7 @@ import androidx.annotation.NonNull;
  * 	 ③ 空页面
  * 	 ④ 成功页面
  */
-public abstract class MianPagerControl extends FrameLayout {
+public abstract class LoadingPager extends FrameLayout {
 
     private Context mContext;
     private View mLoadingView;
@@ -44,7 +44,7 @@ public abstract class MianPagerControl extends FrameLayout {
         }
     }
 
-    public MianPagerControl(@NonNull Context context) {
+    public LoadingPager(@NonNull Context context) {
         super(context);
         mContext = context;
         initCommonView();

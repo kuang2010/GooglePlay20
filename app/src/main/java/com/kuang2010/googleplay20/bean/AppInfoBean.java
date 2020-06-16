@@ -1,5 +1,7 @@
 package com.kuang2010.googleplay20.bean;
 
+import java.util.List;
+
 /**
  * @创建者	 Administrator
  * @创时间 	 2015-10-21 下午2:44:58
@@ -19,4 +21,13 @@ public class AppInfoBean {
 	public String	packageName;	// 应用的包名
 	public long		size;			// 应用的大小
 	public float	stars;			// 应用的评分
+
+	/*******************add********************/
+	public String author		;//		黑马程序员
+	public String date			;//		2015-06-10
+	public String downloadNum	;//		40万+
+	public List<SafeBean> safe			;//		Array
+	public List<String> screen		;//		Array
+	public String version		;//		1.1.0605.0
+
 }

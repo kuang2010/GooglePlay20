@@ -3,19 +3,15 @@ package com.kuang2010.googleplay20.fragment;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.StateListDrawable;
-import android.os.SystemClock;
 import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 //import com.google.android.material.internal.FlowLayout;
-import com.kuang2010.googleplay20.R;
 import com.kuang2010.googleplay20.base.BaseFragment;
-import com.kuang2010.googleplay20.base.MianPagerControl;
+import com.kuang2010.googleplay20.base.LoadingPager;
 import com.kuang2010.googleplay20.base.SuperLoadBaseProtocol;
 import com.kuang2010.googleplay20.protocol.HotProtocol;
 import com.kuang2010.googleplay20.util.DensityUtil;
@@ -34,9 +30,9 @@ import java.util.Random;
 public class HotFragment extends BaseFragment {
     List<String> mDatas;
     @Override
-    protected void initData(final MianPagerControl.ILoadDataFinishPageStateCallBack callBack) {
+    protected void initData(final LoadingPager.ILoadDataFinishPageStateCallBack callBack) {
         HotProtocol hotProtocol = new HotProtocol();
-        hotProtocol.loadData(0, callBack, new SuperLoadBaseProtocol.OnLoadItemDataResultListener<String>() {
+        hotProtocol.loadListData(0, callBack, new SuperLoadBaseProtocol.OnLoadItemDataResultListener<String>() {
             @Override
             public void setItemBeans(List<String> strings) {
                 mDatas = strings;

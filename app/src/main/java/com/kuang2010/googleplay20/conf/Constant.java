@@ -8,6 +8,7 @@ package com.kuang2010.googleplay20.conf;
  */
 public class Constant {
     public static final long	PROTOCOLTIMEOUT	= 24 * 60 * 60 * 1000;//接口数据的本地保存时间长
+    public static final String APPINFO_PACKAGENAME = "packageName";
 
     public static final class URlS {
         public static final String	BASEURL			= "http://192.168.2.140:8080/GooglePlayServer/";

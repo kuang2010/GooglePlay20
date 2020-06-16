@@ -44,7 +44,7 @@ public  class HomeRvAdapter extends BaseRvAdapter<AppInfoBean>{
                 Log.d("tagtag","mAppInfoBeans_size:"+size);
                 SystemClock.sleep(2000);
                 HomeLoadProtocol homeLoadMoreProtocol = new HomeLoadProtocol();
-                homeLoadMoreProtocol.loadMoreData(size, callBack, new BaseProtocol.OnHasMoreDataListener() {
+                homeLoadMoreProtocol.loadMoreListData(size, callBack, new BaseProtocol.OnHasMoreDataListener() {
                     @Override
                     public void setHasMoreData(boolean hasMoreData) {
                         mHasMoreData = hasMoreData;

@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.kuang2010.googleplay20.base.BaseFragment;
-import com.kuang2010.googleplay20.base.MianPagerControl;
+import com.kuang2010.googleplay20.base.LoadingPager;
 
 import java.util.Random;
 
@@ -19,17 +19,17 @@ import java.util.Random;
 public class TestFragment extends BaseFragment {
 
     @Override
-    protected void initData(final MianPagerControl.ILoadDataFinishPageStateCallBack callBack) {
+    protected void initData(final LoadingPager.ILoadDataFinishPageStateCallBack callBack) {
         new Thread(){
             @Override
             public void run() {
                 super.run();
                 SystemClock.sleep(2000);
 
-                MianPagerControl.PageState[] pageStates = new MianPagerControl.PageState[]{
-                        MianPagerControl.PageState.STATE_SUCCESS,
-                        MianPagerControl.PageState.STATE_ERROR,
-                        MianPagerControl.PageState.STATE_EMPTY,
+                LoadingPager.PageState[] pageStates = new LoadingPager.PageState[]{
+                        LoadingPager.PageState.STATE_SUCCESS,
+                        LoadingPager.PageState.STATE_ERROR,
+                        LoadingPager.PageState.STATE_EMPTY,
                 };
                 Random random = new Random();
                 int index = random.nextInt(pageStates.length) ;

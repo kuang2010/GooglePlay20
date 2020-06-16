@@ -1,14 +1,11 @@
 package com.kuang2010.googleplay20.fragment;
 
-import android.os.SystemClock;
-import android.view.Gravity;
 import android.view.View;
-import android.widget.TextView;
 
 import com.kuang2010.googleplay20.adapter.CategoryAdapter;
 import com.kuang2010.googleplay20.base.BaseFragment;
 import com.kuang2010.googleplay20.base.BaseProtocol;
-import com.kuang2010.googleplay20.base.MianPagerControl;
+import com.kuang2010.googleplay20.base.LoadingPager;
 import com.kuang2010.googleplay20.base.SuperLoadBaseProtocol;
 import com.kuang2010.googleplay20.bean.CategoryBean;
 import com.kuang2010.googleplay20.bean.CategoryInfoBean;
@@ -17,7 +14,6 @@ import com.kuang2010.googleplay20.protocol.CategoryProtocol;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -30,9 +26,9 @@ import androidx.recyclerview.widget.RecyclerView;
 public class CategoryFragment extends BaseFragment {
     List<CategoryInfoBean> mCategoryInfoBeans;
     @Override
-    protected void initData(final MianPagerControl.ILoadDataFinishPageStateCallBack callBack) {
+    protected void initData(final LoadingPager.ILoadDataFinishPageStateCallBack callBack) {
         CategoryProtocol categoryProtocol = new CategoryProtocol();
-        categoryProtocol.loadData(0, callBack, new SuperLoadBaseProtocol.OnLoadItemDataResultListener<CategoryBean>() {
+        categoryProtocol.loadListData(0, callBack, new SuperLoadBaseProtocol.OnLoadItemDataResultListener<CategoryBean>() {
             @Override
             public void setItemBeans(List<CategoryBean> categoryBeans) {
                 mCategoryInfoBeans = new ArrayList<>();

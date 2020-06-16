@@ -1,11 +1,14 @@
 package com.kuang2010.googleplay20.viewhold;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.kuang2010.googleplay20.DetailActivity;
 import com.kuang2010.googleplay20.R;
 import com.kuang2010.googleplay20.base.BaseViewHold;
 import com.kuang2010.googleplay20.bean.AppInfoBean;
@@ -42,14 +45,16 @@ public class AppInfoViewHold extends BaseViewHold<AppInfoBean> {
     TextView	mTvTitle;
 
     private Context mContext;
+    private  View mItemView;
     public AppInfoViewHold(Context context, @NonNull View itemView) {
         super(itemView);
         mContext = context;
+        mItemView = itemView;
         x.view().inject(this,itemView);
     }
 
     @Override
-    public void setData(AppInfoBean data) {
+    public void setData(final AppInfoBean data) {
         mTvDes.setText(data.des);
         mTvSize.setText(StringUtils.formatFileSize(data.size));
         mTvTitle.setText(data.name);
@@ -62,6 +67,15 @@ public class AppInfoViewHold extends BaseViewHold<AppInfoBean> {
         // BitmapUtils bitmapUtils = new BitmapUtils(UIUtils.getContext());
         // http://localhost:8080/GooglePlayServer/image?name=app/com.itheima.www/icon.jpg
         BitmapUtilFactory.getBitmapUtils(mContext).display(mIvIcon, Constant.URlS.IMAGEBASEURL + data.iconUrl);
+
+        mItemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, DetailActivity.class);
+                intent.putExtra(Constant.APPINFO_PACKAGENAME,data.packageName);
+                mContext.startActivity(intent);
+            }
+        });
     }
 
 

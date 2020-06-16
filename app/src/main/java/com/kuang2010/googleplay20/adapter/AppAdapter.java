@@ -40,7 +40,7 @@ public class AppAdapter extends BaseRvAdapter<AppInfoBean> {
     @Override
     protected void loadMoreData(int size, ILoadMoreDataAndStateCallBack callBack) {
         AppLoadProtocol appLoadMoreProtocol = new AppLoadProtocol();
-        appLoadMoreProtocol.loadMoreData( size,callBack, new BaseProtocol.OnHasMoreDataListener() {
+        appLoadMoreProtocol.loadMoreListData( size,callBack, new BaseProtocol.OnHasMoreDataListener() {
             @Override
             public void setHasMoreData(boolean hasMoreData) {
                 mHasMoreData = hasMoreData;

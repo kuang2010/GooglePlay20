@@ -5,7 +5,6 @@ import android.view.View;
 import com.kuang2010.googleplay20.adapter.HomeRvAdapter;
 import com.kuang2010.googleplay20.base.BaseFragment;
 import com.kuang2010.googleplay20.base.BaseProtocol;
-import com.kuang2010.googleplay20.base.LoadBaseProtocol;
 import com.kuang2010.googleplay20.base.MianPagerControl;
 import com.kuang2010.googleplay20.base.SuperLoadBaseProtocol;
 import com.kuang2010.googleplay20.bean.AppInfoBean;
@@ -83,7 +82,7 @@ public class HomeFragment extends BaseFragment {
   */
 
         HomeLoadProtocol homeLoadProtocol = new HomeLoadProtocol();
-        homeLoadProtocol.loadData(0, callBack, new SuperLoadBaseProtocol.OnLoadDataResultListener<AppInfoBean>() {
+        homeLoadProtocol.loadData(0, callBack, new SuperLoadBaseProtocol.OnLoadItemDataResultListener<AppInfoBean>() {
             @Override
             public void setItemBeans(List<AppInfoBean> appInfoBeans) {
                 mAppInfoBeans = appInfoBeans;

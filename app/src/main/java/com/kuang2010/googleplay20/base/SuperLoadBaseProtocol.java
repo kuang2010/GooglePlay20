@@ -11,26 +11,25 @@ import java.util.List;
  * date: 2020/6/14
  * time: 17:56
  * desc: 整合LoadMoreBaseProtocol与 LoadBaseProtocol
- * 完成首次加载数据和加载更多的数据的网络协议
- *
- * T是接口返回的所有数据类型，有可能是集合，有可能是bean。
+ * 满足协议数据主要内容是List<ItemBean>的网络请求
+ * T是接口返回的所有数据类型，有可能是一种List<Bean>，也可能是List<Bean>+xxx组成的JavaBean类型
  * ItemBean是接口返回的所有数据里的一种bean数据类型
  */
 public abstract class SuperLoadBaseProtocol<T,ItemBean> extends BaseProtocol{
 
     /** 首次加载数据的结果回调,用于获取数据*/
-    private OnLoadDataResultListener<ItemBean> mOnLoadDataResultListener;
-    public interface OnLoadDataResultListener<ItemBean>{
+    private OnLoadItemDataResultListener<ItemBean> mOnLoadItemDataResultListener;
+    public interface OnLoadItemDataResultListener<ItemBean>{
         /**
          * 外界获取一般条目数据
          * @param itemBeans 一般条目数据
          */
-        void setItemBeans(List<ItemBean> itemBeans);
+        void setItemBeans(List<ItemBean> itemBeans);//这个属于子类特有的业务功能，建议不要放进来
         /**
          * 外界获取轮播图数据
          * @param mPictures 轮播图数据
          */
-        void setLunboPics(List<String> mPictures);
+        void setLunboPics(List<String> mPictures);//这个属于子类特有的业务功能，建议不要放进来
     }
 
     /**
@@ -42,7 +41,7 @@ public abstract class SuperLoadBaseProtocol<T,ItemBean> extends BaseProtocol{
     /**
      * 下拉加载更多数据的回调
      */
-    BaseRvAdapter.ILoadMoreDataAndStateCallBack moreDataAndStateCallBack;
+    BaseRvAdapter.ILoadMoreDataAndStateCallBack moreDataAndStateCallBack;//这个属于子类特有的业务，建议不要放进来
 
 
     @Override
@@ -81,9 +80,9 @@ public abstract class SuperLoadBaseProtocol<T,ItemBean> extends BaseProtocol{
 
 //        mPictures = homeBean.picture;
         List<String> mPictures = getLunboPictures(t);
-        if (mOnLoadDataResultListener!=null){
-            mOnLoadDataResultListener.setItemBeans(itemBeans);
-            mOnLoadDataResultListener.setLunboPics(mPictures);
+        if (mOnLoadItemDataResultListener !=null){
+            mOnLoadItemDataResultListener.setItemBeans(itemBeans);
+            mOnLoadItemDataResultListener.setLunboPics(mPictures);
         }
 
         /*****************走到这里认为还有数据没加载完********************/
@@ -124,12 +123,12 @@ public abstract class SuperLoadBaseProtocol<T,ItemBean> extends BaseProtocol{
      * 外界调用，首次加载数据
      * @param index 分页加载数据的下标
      * @param pageStateCallBack 加载数据完成后的回调，用于刷新UI
-     * @param onLoadDataResultListener 加载数据的结果回调,用于获取首次的结果数据
+     * @param onLoadItemDataResultListener 加载数据的结果回调,用于获取首次的结果数据
      * @param onHasMoreDataListener  有更多数据的回调监听,用于判断是否要加载更多数据
      */
-    public void loadData(int index, MianPagerControl.ILoadDataFinishPageStateCallBack pageStateCallBack, OnLoadDataResultListener<ItemBean> onLoadDataResultListener,  OnHasMoreDataListener onHasMoreDataListener) {
+    public void loadData(int index, MianPagerControl.ILoadDataFinishPageStateCallBack pageStateCallBack, OnLoadItemDataResultListener<ItemBean> onLoadItemDataResultListener, OnHasMoreDataListener onHasMoreDataListener) {
         this.pageStateCallBack = pageStateCallBack;
-        mOnLoadDataResultListener = onLoadDataResultListener;
+        mOnLoadItemDataResultListener = onLoadItemDataResultListener;
         mOnHasMoreDataListener = onHasMoreDataListener;
         super.loadData(index);
     }

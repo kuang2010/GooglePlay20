@@ -27,7 +27,7 @@ public class AppFragment extends BaseFragment {
     @Override
     protected void initData(final MianPagerControl.ILoadDataFinishPageStateCallBack callBack) {
         AppLoadProtocol appLoadProtocol = new AppLoadProtocol();
-        appLoadProtocol.loadData(0, callBack, new SuperLoadBaseProtocol.OnLoadDataResultListener<AppInfoBean>() {
+        appLoadProtocol.loadData(0, callBack, new SuperLoadBaseProtocol.OnLoadItemDataResultListener<AppInfoBean>() {
             @Override
             public void setItemBeans(List<AppInfoBean> appInfoBeans) {
                 mAppInfoBeans = appInfoBeans;

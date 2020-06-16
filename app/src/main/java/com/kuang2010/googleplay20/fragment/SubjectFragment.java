@@ -1,8 +1,6 @@
 package com.kuang2010.googleplay20.fragment;
 
-import android.view.Gravity;
 import android.view.View;
-import android.widget.TextView;
 
 import com.kuang2010.googleplay20.adapter.SubjectAdapter;
 import com.kuang2010.googleplay20.base.BaseFragment;
@@ -27,7 +25,7 @@ public class SubjectFragment extends BaseFragment {
     @Override
     protected void initData(final MianPagerControl.ILoadDataFinishPageStateCallBack callBack) {
         SubJectProtocol subJectProtocol = new SubJectProtocol();
-        subJectProtocol.loadData(0, callBack, new SuperLoadBaseProtocol.OnLoadDataResultListener<SubjectBean>() {
+        subJectProtocol.loadData(0, callBack, new SuperLoadBaseProtocol.OnLoadItemDataResultListener<SubjectBean>() {
             @Override
             public void setItemBeans(List<SubjectBean> subjectBeans) {
                 mSubjectBeans = subjectBeans;

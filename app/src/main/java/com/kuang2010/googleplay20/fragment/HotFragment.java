@@ -6,11 +6,13 @@ import android.graphics.drawable.StateListDrawable;
 import android.os.SystemClock;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+//import com.google.android.material.internal.FlowLayout;
 import com.kuang2010.googleplay20.R;
 import com.kuang2010.googleplay20.base.BaseFragment;
 import com.kuang2010.googleplay20.base.MianPagerControl;
@@ -52,8 +54,11 @@ public class HotFragment extends BaseFragment {
 
         ScrollView sv = new ScrollView(mContext);
 
-        FlowLayout fl = new FlowLayout(mContext);
-//        LinearLayout fl = new LinearLayout(mContext);
+        FlowLayout flowLayout = new FlowLayout(mContext);
+//        LinearLayout flowLayout = new LinearLayout(mContext);
+        com.google.android.material.internal.FlowLayout fl = new com.google.android.material.internal.FlowLayout(mContext);
+        /*<item name="itemSpacing">15dp</item>*/
+       /* <item name="lineSpacing">15dp</item>*/
 
 
         for (final String info : mDatas) {
@@ -63,6 +68,7 @@ public class HotFragment extends BaseFragment {
             tv.setPadding(padding, padding, padding, padding);
             tv.setGravity(Gravity.CENTER);
             tv.setTextColor(Color.WHITE);
+
             // 设置圆角的背景
             //tv.setBackgroundResource(R.drawable.shape_hot_tv);
 
@@ -101,7 +107,7 @@ public class HotFragment extends BaseFragment {
                 }
             });
 
-//            fl.setSpace(30,30);
+//            flowLayout.setSpace(30,30);
             fl.addView(tv);
         }
 

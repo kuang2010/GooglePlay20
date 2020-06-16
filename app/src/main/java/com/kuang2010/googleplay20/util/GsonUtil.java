@@ -8,6 +8,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -75,11 +76,11 @@ public class GsonUtil {
      * 将json字符串转换成List
      * 泛型解析
      * @param json  [{},{}]
-     * @param cls
+     * @param type new TypeToken<List<T>>() {}.getType()
      * @return
      */
-    public static <T> List<T> jsonType2List(String json, Class<T> cls){
-        return gson.fromJson(json, new TypeToken<List<T>>() {}.getType());
+    public static <T> List<T> jsonType2List(String json,Type type){
+        return gson.fromJson(json, type);//gson.fromJson(json, new TypeToken<List<T>>() {}.getType());
     }
 
 
@@ -87,12 +88,12 @@ public class GsonUtil {
      * 将json字符串转换成 map
      * 泛型解析
      * @param json  {"":"","":{},"":[]}
+     * @param type new TypeToken<HashMap<K,V>>(){}.getType()
      * @return
      */
-    public static <K,V> HashMap<K,V> jsonType2Map(String json,Class<K> kClass,Class<V> vClass){
-        return  gson.fromJson(json,new TypeToken<HashMap<K,V>>(){}.getType());
+    public static <K,V> HashMap<K,V> jsonType2Map(String json,Type type){
+        return  gson.fromJson(json, type);//gson.fromJson(json,new TypeToken<HashMap<K,V>>(){}.getType());
     }
-
 
     /**
      * 将JsonObject对象转换成Map集合

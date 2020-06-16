@@ -5,10 +5,21 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
 
+import com.kuang2010.googleplay20.adapter.CategoryAdapter;
 import com.kuang2010.googleplay20.base.BaseFragment;
+import com.kuang2010.googleplay20.base.BaseProtocol;
 import com.kuang2010.googleplay20.base.MianPagerControl;
+import com.kuang2010.googleplay20.base.SuperLoadBaseProtocol;
+import com.kuang2010.googleplay20.bean.CategoryBean;
+import com.kuang2010.googleplay20.bean.CategoryInfoBean;
+import com.kuang2010.googleplay20.factory.RecyclerViewFactory;
+import com.kuang2010.googleplay20.protocol.CategoryProtocol;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * author: kuangzeyu2019
@@ -17,32 +28,49 @@ import java.util.Random;
  * desc: 分类
  */
 public class CategoryFragment extends BaseFragment {
+    List<CategoryInfoBean> mCategoryInfoBeans;
     @Override
     protected void initData(final MianPagerControl.ILoadDataFinishPageStateCallBack callBack) {
-        new Thread(){
+        CategoryProtocol categoryProtocol = new CategoryProtocol();
+        categoryProtocol.loadData(0, callBack, new SuperLoadBaseProtocol.OnLoadItemDataResultListener<CategoryBean>() {
             @Override
-            public void run() {
-                super.run();
-                SystemClock.sleep(2000);
+            public void setItemBeans(List<CategoryBean> categoryBeans) {
+                mCategoryInfoBeans = new ArrayList<>();
+                for (CategoryBean categoryBean : categoryBeans){
+                    List<CategoryInfoBean> infos = categoryBean.infos;
+                    String title = categoryBean.title;
+                    //手动添加titleXXXBean:
+                    CategoryInfoBean titleCategoryInfoBean = new CategoryInfoBean();
+                    titleCategoryInfoBean.isTitle = true;
+                    titleCategoryInfoBean.title = title;
+                    mCategoryInfoBeans.add(titleCategoryInfoBean);
+                    //添加itemXXXBean:
+                    for (CategoryInfoBean categoryInfoBean:infos){
+                        categoryInfoBean.isTitle = false;
+                        mCategoryInfoBeans.add(categoryInfoBean);
+                    }
 
-                MianPagerControl.PageState[] pageStates = new MianPagerControl.PageState[]{
-                        MianPagerControl.PageState.STATE_SUCCESS,
-                        MianPagerControl.PageState.STATE_ERROR,
-                        MianPagerControl.PageState.STATE_EMPTY,
-                };
-                Random random = new Random();
-                int index = random.nextInt(pageStates.length) ;
-                callBack.setLoadingFinishPageStateAndRefreshUi(pageStates[index]);
+                }
+            }
+
+            @Override
+            public void setLunboPics(List<String> mPictures) {
 
             }
-        }.start();
+        }, new BaseProtocol.OnHasMoreDataListener() {
+            @Override
+            public void setHasMoreData(boolean hasMoreData) {
+
+            }
+        });
     }
 
     @Override
     protected View initSuccessView() {
-        TextView tv = new TextView(mContext);
-        tv.setText(this.getClass().getSimpleName());
-        tv.setGravity(Gravity.CENTER);
-        return tv;
+        RecyclerView rv = RecyclerViewFactory.createRecyclerView(mContext);
+        CategoryAdapter adapter = new CategoryAdapter(mContext);
+        rv.setAdapter(adapter);
+        adapter.setData(mCategoryInfoBeans);
+        return rv;
     }
 }

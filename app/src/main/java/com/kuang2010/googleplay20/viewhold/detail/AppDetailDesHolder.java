@@ -107,7 +107,7 @@ public class AppDetailDesHolder extends BaseHolder<AppInfoBean> implements View.
         );
 
         /*mTvDes.setPivotY(0);
-        mTvDes.setScaleY(0.5f);//缩放-->变挤,变松
+        mTvDes.setScaleY(0.5f);//缩放-->变挤,变松,可视的内容不会变多或变少
         int measuredHeight = mTvDes.getMeasuredHeight();
         int height = mTvDes.getHeight();
         mTvDesOpenAnim = ObjectAnimator.ofFloat(
@@ -123,7 +123,7 @@ public class AppDetailDesHolder extends BaseHolder<AppInfoBean> implements View.
                 0.5f
         );*/
 
-        //属性动画执行过程监听
+        //监听属性动画的执行过程
         Animator.AnimatorListener listener = new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
@@ -136,6 +136,7 @@ public class AppDetailDesHolder extends BaseHolder<AppInfoBean> implements View.
                 int measuredHeight = mTvDes.getMeasuredHeight();
                 int height = mTvDes.getHeight();
 
+                //找爹
                 ViewParent parent = mTvDes.getParent();
                 if (parent!=null){
                     while (true){

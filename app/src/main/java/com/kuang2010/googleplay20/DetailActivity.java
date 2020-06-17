@@ -2,7 +2,9 @@ package com.kuang2010.googleplay20;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.LruCache;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -33,6 +35,7 @@ public class DetailActivity extends AppCompatActivity {
         initView();
         initData();
         initEvent();
+
     }
 
     private void initEvent() {

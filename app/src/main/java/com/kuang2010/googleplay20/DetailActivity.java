@@ -14,6 +14,7 @@ import com.kuang2010.googleplay20.base.LoadingPager;
 import com.kuang2010.googleplay20.base.SuperLoadBaseProtocol;
 import com.kuang2010.googleplay20.bean.AppInfoBean;
 import com.kuang2010.googleplay20.conf.Constant;
+import com.kuang2010.googleplay20.manager.DownLoadManager;
 import com.kuang2010.googleplay20.protocol.DetailPageProtocol;
 import com.kuang2010.googleplay20.viewhold.detail.AppDetailBottomHolder;
 import com.kuang2010.googleplay20.viewhold.detail.AppDetailDesHolder;
@@ -29,6 +30,8 @@ public class DetailActivity extends AppCompatActivity {
     private String mPackageName;
     private LoadingPager mLoadingPager;
     private AppInfoBean mAppInfoBean;
+    private AppDetailBottomHolder mAppDetailBottomHolder;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -108,10 +111,29 @@ public class DetailActivity extends AppCompatActivity {
         mContainerDes.addView(appDetailDesHolder.getView());
         appDetailDesHolder.setData(mAppInfoBean);
 
-        AppDetailBottomHolder appDetailBottomHolder = new AppDetailBottomHolder(this);
-        mContainerBottom.addView(appDetailBottomHolder.getView());
-        appDetailBottomHolder.setData(mAppInfoBean);
+        mAppDetailBottomHolder = new AppDetailBottomHolder(this);
+        mContainerBottom.addView(mAppDetailBottomHolder.getView());
+        mAppDetailBottomHolder.setData(mAppInfoBean);
 
         return view;
+    }
+
+
+    @Override
+    protected void onResume() {
+        if(mAppDetailBottomHolder!=null){
+            // 添加观察者,继续监听
+            DownLoadManager.getDownLoadManagerInstance().addDownLoadObserve(mAppDetailBottomHolder);
+        }
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        if(mAppDetailBottomHolder!=null){
+            //移除观察者，取消监听
+            DownLoadManager.getDownLoadManagerInstance().removeObserve(mAppDetailBottomHolder);
+        }
+        super.onPause();
     }
 }

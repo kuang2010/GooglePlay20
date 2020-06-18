@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/detail_bottom_bg"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp"
+    android:gravity="center_vertical">
+
+    <Button
+        android:layout_width="68dp"
+        android:layout_height="38dp"
+        android:text="收藏"
+        android:background="@drawable/selector_detail_btn_bg"
+        android:layout_margin="5dp"/>
+
+    <com.kuang2010.googleplay20.view.ProgressButtonView
+        android:id="@+id/pbtn_detail_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="下载"
+        android:layout_weight="1"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:background="@drawable/selector_bg_bottom_down"/>
+
+    <Button
+        android:layout_width="68dp"
+        android:layout_height="38dp"
+        android:text="分享"
+        android:background="@drawable/selector_detail_btn_bg"
+        android:layout_margin="5dp"/>
+
+</LinearLayout>

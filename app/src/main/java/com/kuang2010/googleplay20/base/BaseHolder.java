@@ -8,7 +8,7 @@ import android.view.View;
  * date: 2020/6/16
  * time: 19:06
  * desc: view + data
- * 提供视图 + 接收数据T + 绑定数据
+ * 提供视图 + 接收数据T + 绑定数据(刷新UI)
  */
 public abstract class BaseHolder<T> {
 
@@ -41,7 +41,7 @@ public abstract class BaseHolder<T> {
     }
 
     /**
-     * 子类实现，数据和视图绑定
+     * 子类实现，数据和视图绑定(刷新UI)
      * @param data
      */
     protected abstract void bindDataToView(T data);

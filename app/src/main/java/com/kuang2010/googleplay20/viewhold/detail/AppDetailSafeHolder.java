@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.animation.Animation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -109,10 +110,11 @@ public class AppDetailSafeHolder extends BaseHolder<AppInfoBean> implements View
         mDesOpenAnimator = ValueAnimator.ofInt(0,desHeight);
         mDeesCloseAnimator = ValueAnimator.ofInt(desHeight,0);
 
-        // 1.监听属性动画的渐变过程，得到渐变值
+        // 1.监听属性动画的渐变过程，得到渐变值，手动完成动画
         ValueAnimator.AnimatorUpdateListener listener = new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
+                //在动画时间内这个方法会被多次调用！
                 int height = (int) animation.getAnimatedValue();//得到渐变值
                 ViewGroup.LayoutParams layoutParams = mContainerDes.getLayoutParams();
                 layoutParams.height = height;//利用渐变值完成动的过程(高度折叠动画)

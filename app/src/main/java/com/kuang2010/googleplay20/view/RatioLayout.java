@@ -2,6 +2,7 @@ package com.kuang2010.googleplay20.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
 

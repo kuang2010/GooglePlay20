@@ -2,13 +2,11 @@ package com.kuang2010.googleplay20;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.util.LruCache;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.TextView;
 
 import com.kuang2010.googleplay20.base.LoadingPager;
 import com.kuang2010.googleplay20.base.SuperLoadBaseProtocol;
@@ -38,6 +36,8 @@ public class DetailActivity extends AppCompatActivity {
         initView();
         initData();
         initEvent();
+
+        requestPermissions(new String[]{"android.permission.WRITE_EXTERNAL_STORAGE","android.permission.READ_EXTERNAL_STORAGE"},100);
 
     }
 
@@ -118,12 +118,14 @@ public class DetailActivity extends AppCompatActivity {
         return view;
     }
 
-
+    /**有权限请求会时onResume()会被调用两次，因为权限请求会弹框(onPause)，只是太快了没看到这个框而已(onResume())*/
     @Override
     protected void onResume() {
-        if(mAppDetailBottomHolder!=null){
+        if(mAppDetailBottomHolder!=null){//网络慢时，进入该页面mAppDetailBottomHolder是空的，只有离开这个页面跳到了其他APP页面再回到这个页面网络加载完成后才会不为空
             // 添加观察者,继续监听
             DownLoadManager.getDownLoadManagerInstance().addDownLoadObserve(mAppDetailBottomHolder);
+            //手动发布一次通知,让观察者获取到当前的downloadInfo
+            DownLoadManager.getDownLoadManagerInstance().notifyUpdateUi(DownLoadManager.getDownLoadManagerInstance().getDownLoadInfo(this,mAppInfoBean));
         }
         super.onResume();
     }

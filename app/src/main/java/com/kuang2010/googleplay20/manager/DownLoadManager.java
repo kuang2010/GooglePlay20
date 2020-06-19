@@ -14,17 +14,13 @@ import com.kuang2010.googleplay20.util.CommonUtils;
 import com.kuang2010.googleplay20.util.FileUtil;
 import com.kuang2010.googleplay20.util.IOUtils;
 
-import org.xutils.http.RequestParams;
-import org.xutils.http.annotation.HttpResponse;
-import org.xutils.x;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.net.Socket;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -50,6 +46,7 @@ public class DownLoadManager {
 
 //    private static int mCurState;
     private Map<String,DownloadInfo> mDownloadInfos = new HashMap<>();//给外界根据包名获取到对应的上一次的下载信息
+    private Map<String,Runnable> mRunnableMap = new HashMap<>();//所有下载任务的集合
 
     private DownLoadManager(){};
 
@@ -92,29 +89,8 @@ public class DownLoadManager {
         DownloadInfo downloadInfo = new DownloadInfo();//单例里的局部变量不是唯一的
         mDownloadInfos.put(appInfoBean.packageName,downloadInfo);
 
-        if (CommonUtils.isInstalled(context,appInfoBean.packageName)){
-            //已安装
-            downloadInfo.mCurState = STATE_INSTALLED;
-            updateUi(downloadInfo);
-            return;
-        }
-
         String filePath = getSaveFilePath(appInfoBean.packageName);
         File saveFile = new File(filePath);
-        if (saveFile.exists() && saveFile.length()>0){
-            //已下载
-            if (saveFile.length()<appInfoBean.size){
-                //未下载完，之前暂停了下载
-                downloadInfo.mCurState = STATE_PAUSEDOWNLOAD;
-                updateUi(downloadInfo);
-            }else {
-                //已下载完成
-                downloadInfo.mCurState = STATE_DOWNLOADED;
-                updateUi(downloadInfo);
-            }
-            return;
-        }
-
         downloadInfo.downloadUrl = Constant.URlS.BASEURL+"download";
         downloadInfo.downloadUrlParmaName = appInfoBean.downloadUrl;
         downloadInfo.curProgress = saveFile.exists()?saveFile.length():0 ;
@@ -123,8 +99,30 @@ public class DownLoadManager {
         downloadInfo.size = appInfoBean.size;
         downloadInfo.version = appInfoBean.version;
 
+        /*if (CommonUtils.isInstalled(context,appInfoBean.packageName)){
+            //已安装
+            downloadInfo.mCurState = STATE_INSTALLED;
+            notifyUpdateUi(downloadInfo);
+            return;
+        }
+
+        if (saveFile.exists() && saveFile.length()>0){
+            //已下载
+            if (saveFile.length()<appInfoBean.size){
+                //未下载完，之前暂停了下载
+                downloadInfo.mCurState = STATE_PAUSEDOWNLOAD;
+                notifyUpdateUi(downloadInfo);
+            }else {
+                //已下载完成
+                downloadInfo.mCurState = STATE_DOWNLOADED;
+                notifyUpdateUi(downloadInfo);
+                return;
+            }
+
+        }*/
+
         downloadInfo.mCurState = STATE_UNDOWNLOAD;
-        updateUi(downloadInfo);
+        notifyUpdateUi(downloadInfo);
 
         /**
          * 预先把状态置为等待状态
@@ -132,19 +130,20 @@ public class DownLoadManager {
          * 2.假如正在执行的下载任务>=3个,需要执行的"下载任务",应该会放到"任务队列"中--->此时的状态还是"等待中"
          */
         downloadInfo.mCurState =  STATE_WAITINGDOWNLOAD;
-        updateUi(downloadInfo);
+        notifyUpdateUi(downloadInfo);
 
         /**
          * 启动有三个线的线程池去开启下载任务。
          * 因此最多可以有三个下载任务同时进行，多出的下载任务会在线程池里的队列中排队等待执行
          * **/
-        ThreadPoolExecutorProxyFactory.createDownLoadThreadPoolExecutorProxy().submit(new DownLoadTask(downloadInfo));
+        DownLoadTask downLoadTask = new DownLoadTask(downloadInfo);
+        mRunnableMap.put(downloadInfo.packageName,downLoadTask);
+        ThreadPoolExecutorProxyFactory.createDownLoadThreadPoolExecutorProxy().submit(downLoadTask);
     }
 
 
     private String getSaveFilePath(String packageName) {
-        String appDir = FileUtil.getDir("app");
-        return appDir+"/"+packageName+".apk";
+        return FileUtil.getPublicDir("app")+"/"+packageName+".apk";
     }
 
 
@@ -153,52 +152,93 @@ public class DownLoadManager {
      * @param downloadInfo  与 DownLoadTask里的mDownloadInfo是同一个对象
      */
     public void pauseLoad(DownloadInfo downloadInfo) {
-        downloadInfo.mCurState = STATE_PAUSEDOWNLOAD;
-        updateUi(downloadInfo);
+        downloadInfo.mCurState = STATE_PAUSEDOWNLOAD;//-->while结束循环
+        notifyUpdateUi(downloadInfo);
+    }
+
+
+    public void cancelLoad(DownloadInfo downloadInfo){
+//        Runnable runnable = mRunnableMap.get(downloadInfo.packageName);
+//        ThreadPoolExecutorProxyFactory.createDownLoadThreadPoolExecutorProxy().remove(runnable);
+        mRunnableMap.remove(downloadInfo.packageName);
+        downloadInfo.mCurState = STATE_UNDOWNLOAD;
+        notifyUpdateUi(downloadInfo);
     }
 
     /**
-     * 主要获取downLoadInfo里的状态信息
+     * 这里的逻辑有点复杂，可以调试处理
+     * 主要给外界首次进入页面和Resume时获取downLoadInfo的信息
      * @param context
      * @param appInfoBean
      * @return
      */
     public DownloadInfo getDownLoadInfo(Context context,AppInfoBean appInfoBean) {
-        if (mDownloadInfos.get(appInfoBean.packageName) == null){
-            //第一次下载，或应用重启
-            DownloadInfo downloadInfo = new DownloadInfo();
+        if (appInfoBean == null)return null;
 
-            if (CommonUtils.isInstalled(context,appInfoBean.packageName)){
+        DownloadInfo downloadInfo = mDownloadInfos.get(appInfoBean.packageName);
+        String filePath = getSaveFilePath(appInfoBean.packageName);
+        File saveFile = new File(filePath);
+
+        if (downloadInfo == null){
+            //第一次下载，或杀进程后重启应用
+            downloadInfo = new DownloadInfo();
+            downloadInfo.downloadUrl = Constant.URlS.BASEURL+"download";
+            downloadInfo.downloadUrlParmaName = appInfoBean.downloadUrl;
+            downloadInfo.curProgress = saveFile.exists()?saveFile.length():0 ;
+            downloadInfo.packageName = appInfoBean.packageName;
+            downloadInfo.savePath = filePath;
+            downloadInfo.size = appInfoBean.size;
+            downloadInfo.version = appInfoBean.version;
+
+            if (CommonUtils.isInstalled(context,downloadInfo.packageName)){
                 //已安装
                 downloadInfo.mCurState = STATE_INSTALLED;
-                updateUi(downloadInfo);
                 return downloadInfo;
             }
 
-            String filePath = getSaveFilePath(appInfoBean.packageName);
-            File saveFile = new File(filePath);
             if (saveFile.exists() && saveFile.length()>0){
                 //已下载
-                if (saveFile.length()<appInfoBean.size){
+                if (saveFile.length()<downloadInfo.size){
                     //未下载完，之前暂停了下载
                     downloadInfo.mCurState = STATE_PAUSEDOWNLOAD;
-                    updateUi(downloadInfo);
                 }else {
                     //已下载完成
                     downloadInfo.mCurState = STATE_DOWNLOADED;
-                    updateUi(downloadInfo);
                 }
                 return downloadInfo;
             }
 
-            //没下载过，第一次下载
-            downloadInfo.mCurState = STATE_UNDOWNLOAD;
-            return downloadInfo;
+            downloadInfo.mCurState = STATE_UNDOWNLOAD;//其他三种状态不可能出现在这里
 
         }else {
 
-           return mDownloadInfos.get(appInfoBean.packageName);
+            if (CommonUtils.isInstalled(context,downloadInfo.packageName)){
+                //(人为)已安装
+                downloadInfo.mCurState = STATE_INSTALLED;
+                return downloadInfo;
+            }
+
+            if (!saveFile.exists() ||saveFile.length()==0){
+                //(人为)删除apk文件，或正在等待下载
+                if (downloadInfo.curProgress>0){//则不是正在等待下载
+                    //是(人为)删除了apk文件
+                    downloadInfo.mCurState = STATE_UNDOWNLOAD;
+                    return downloadInfo;
+                }
+            }
+
+            if (saveFile.exists() && saveFile.length()==downloadInfo.size){
+                //已下载并安装完成, 但是被(人为)卸载了
+                downloadInfo.mCurState = STATE_DOWNLOADED;
+                return downloadInfo;
+            }
+
+            //否则，保持原有状态
+
         }
+
+
+        return downloadInfo;
     }
 
 
@@ -213,17 +253,24 @@ public class DownLoadManager {
         @Override
         public void run() {
             //子线程
+            if (!mRunnableMap.containsValue(this)){
+                //任务取消
+                return;
+            }
+
+            mDownloadInfo.mCurState =  STATE_DOWNLOADING;
+            notifyUpdateUi(mDownloadInfo);
+
             InputStream in = null;
             FileOutputStream out = null;
             try {
-//                RequestParams requestParams = new RequestParams();
-
-//                HttpURLConnection conn = x.http().getSync(requestParams, HttpURLConnection.class);
 
                 URL url = new URL(mDownloadInfo.downloadUrl+"?name="+mDownloadInfo.downloadUrlParmaName+"&range="+mDownloadInfo.curProgress);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 //                conn.addRequestProperty();
                 conn.setRequestMethod("GET");
+                conn.setConnectTimeout(3000);
+                conn.setReadTimeout(3000);
 
                 int responseCode = conn.getResponseCode();
 
@@ -236,10 +283,11 @@ public class DownLoadManager {
                     byte[] buf = new byte[1024];
                     int len = -1;
                     boolean isPause = false;
-                    while ((len=in.read(buf))>-1){
+                    while ((len=in.read(buf))!=-1){
 
                         if (mDownloadInfo.mCurState == STATE_PAUSEDOWNLOAD){
                             isPause = true;
+                            break;
                         }
 
                         out.write(buf,0,len);
@@ -247,9 +295,16 @@ public class DownLoadManager {
 
                         mDownloadInfo.mCurState =  STATE_DOWNLOADING;
                         mDownloadInfo.curProgress += len;
-                        updateUi(mDownloadInfo);//由于本地读取数据很快，又使用了handler发消息，会延时收到数据，从而导致在收到最后几节数据前状态已改变为STATE_DOWNLOADED，导致更新进度条更新不到100%
+                        notifyUpdateUi(mDownloadInfo);//由于本地读取数据很快，又使用了handler发消息，会延时收到数据，从而导致在收到最后几节数据前状态已改变为STATE_DOWNLOADED，导致更新进度条更新不到100%
 
+                        Log.d("upDateDownloadUi","len1:"+len);
+                        if (mDownloadInfo.curProgress == mDownloadInfo.size){
+                            //java.net.SocketException: Socket closed
+                            //解决暂停下载又继续下载，下载完跳不出while的服务器问题
+                            break;
+                        }
                     }
+                    Log.d("upDateDownloadUi","len2:"+len);
                     //下载完成或暂停下载
                     if (isPause){
                         //暂停下载，noting to do
@@ -257,15 +312,17 @@ public class DownLoadManager {
                         //下载完成
                         SystemClock.sleep(500);//解决由于使用了handler发消息，会延时收到数据，从而导致在收到最后几节数据前状态已改变为STATE_DOWNLOADED，更新进度条UI失败
                         mDownloadInfo.mCurState =  STATE_DOWNLOADED;
-                        updateUi(mDownloadInfo);
-                        //mDownloadInfos.remove(mDownloadInfo.packageName);
+                        notifyUpdateUi(mDownloadInfo);
+                        Log.d("upDateDownloadUi","downloadInfo>>>>>>STATE_DOWNLOADED");
+
+                        mRunnableMap.remove(mDownloadInfo.packageName);
                     }
                 }
 
-            } catch (IOException throwable) {
-                throwable.printStackTrace();
+            } catch (IOException e) {
+                Log.e("IOException","e:"+e.getCause().toString());
                 mDownloadInfo.mCurState =  STATE_DOWNLOADFAILED;
-                updateUi(mDownloadInfo);
+                notifyUpdateUi(mDownloadInfo);
             }finally {
                 IOUtils.close(out);
                 IOUtils.close(in);
@@ -275,7 +332,9 @@ public class DownLoadManager {
     }
 
     private Handler mHandler = new Handler();
-    private void updateUi(final DownloadInfo downloadInfo) {
+
+    /**被观察者this发布通知给所有的观察者*/
+    public void notifyUpdateUi(final DownloadInfo downloadInfo) {
         if (Looper.myLooper() == Looper.getMainLooper()){
             for (DownLoadObserve downLoadObserve:mDownLoadObserves){
                 downLoadObserve.onDownLoadUpdate(downloadInfo);
@@ -302,7 +361,8 @@ public class DownLoadManager {
     private List<DownLoadObserve> mDownLoadObserves = new ArrayList<>();
 
     /**
-     * 监听下载过程
+     * @des 被观察者(被观察的对象DownloadManager) 订阅 观察者，让观察者监听下载过程
+     * 观察者和被观察者是多对一的关系
      * 不用set方法设置监听，是因为在首页中下载时，会存在多个itemHolder同时使用该单例DownLoadManager去下载的情况，就需要有各自的
      * 监听其同时存在了， 而单例中的成员是唯一的， 使用set方法会覆盖之前的itemHolder设置的监听器。
      * @param downLoadObserve

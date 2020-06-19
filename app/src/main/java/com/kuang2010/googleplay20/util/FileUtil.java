@@ -53,7 +53,7 @@ public class FileUtil {
     }
 
     /**
-     * 获取应用目录，当SD卡存在时，获取SD卡上的目录(/mnt/sdcard/Android/data/包名/cache/name)，当SD卡不存在时，获取应用的cache目录 (/data/data/包名/cache/name)
+     * 获取应用目录，当外置SD卡存在时，获取外置SD卡上的目录(/mnt/sdcard/Android/data/包名/cache/name)，当SD卡不存在时，获取应用的cache目录 (/data/data/包名/cache/name)
      * @param name 目录（文件夹）的名称
      * @return 目录的路径
      * */
@@ -74,7 +74,44 @@ public class FileUtil {
         }
     }
 
-    /** 获取SD下的应用目录 /mnt/sdcard/Android/data/包名/cache/ */
+    /**
+     * 需要读写sdk的权限
+     *  compileSdkVersion 28
+     *  targetSdkVersion 28
+     * 否则在有用户读写权限限制的模拟器上写不了文件
+     *
+     * 获取公共的目录，当外置SD卡存在时，获取外置SD卡上的目录(/mnt/sdcard/包名/name)，当SD卡不存在时，获取应用的cache目录 (/data/data/包名/cache/name)
+     * @param name 目录（文件夹）的名称
+     * @return 目录的路径
+     */
+    public static String getPublicDir(String name) {
+        StringBuilder sb = new StringBuilder();
+        if (isSDCardAvailable()) {
+            sb.append(getEnvironmentStoragePath());
+        } else {
+            sb.append(getCachePath());
+        }
+        sb.append(name);
+        sb.append(File.separator);
+        String path = sb.toString();
+        if (createDirs(path)) {
+            return path;
+        } else {
+            return null;
+        }
+    }
+
+    private static String getEnvironmentStoragePath() {
+        File f = Environment.getExternalStorageDirectory();
+        if (null == f) {
+            return null;
+        }else {
+            String pf = f.getAbsolutePath() + "/" + BaseApplication.getInstance().getPackageName()+"/";
+            return pf;
+        }
+    }
+
+    /** 获取外置SD下的应用目录 /mnt/sdcard/Android/data/包名/cache/ */
     public static String getExternalStoragePath() {
         File f = BaseApplication.getInstance().getExternalCacheDir();
         if (null == f) {

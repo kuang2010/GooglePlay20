@@ -1,9 +1,13 @@
 package com.kuang2010.googleplay20;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.viewpager.widget.ViewPager;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.ViewTreeObserver;
 
@@ -19,10 +23,17 @@ import com.kuang2010.googleplay20.fragment.HotFragment;
 import com.kuang2010.googleplay20.fragment.RecommendFragment;
 import com.kuang2010.googleplay20.fragment.SubjectFragment;
 import com.kuang2010.googleplay20.fragment.TestFragment;
+import com.kuang2010.googleplay20.util.FileUtil;
 
 import org.xutils.x;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.security.Permission;
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -38,8 +49,8 @@ public class MainActivity extends AppCompatActivity {
         initView();
         initData();// 创建Fragement的过程需要时间(视图,loadingpager)
         initEvent();
-
     }
+
 
     private void initXutil() {
         x.Ext.init(getApplication());

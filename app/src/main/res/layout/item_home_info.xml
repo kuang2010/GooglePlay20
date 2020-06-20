@@ -72,25 +72,12 @@
             </LinearLayout>
 
             <!-- 下载部分 -->
-
-            <LinearLayout
+            <com.kuang2010.googleplay20.view.DownloadProgressView
+                android:id="@+id/dpv_down_item"
                 android:layout_width="70dp"
                 android:layout_height="match_parent"
                 android:layout_alignParentRight="true"
-                android:gravity="center"
-                android:orientation="vertical" >
-
-                <ImageView
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:src="@drawable/ic_download" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:text="下载" />
-            </LinearLayout>
+                android:background="@color/translate"/>
         </RelativeLayout>
 
         <!-- 分割线 -->

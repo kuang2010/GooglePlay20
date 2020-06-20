@@ -23,6 +23,7 @@ import com.kuang2010.googleplay20.fragment.HotFragment;
 import com.kuang2010.googleplay20.fragment.RecommendFragment;
 import com.kuang2010.googleplay20.fragment.SubjectFragment;
 import com.kuang2010.googleplay20.fragment.TestFragment;
+import com.kuang2010.googleplay20.manager.DownLoadManager;
 import com.kuang2010.googleplay20.util.FileUtil;
 
 import org.xutils.x;
@@ -45,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        requestPermissions(new String[]{"android.permission.WRITE_EXTERNAL_STORAGE","android.permission.READ_EXTERNAL_STORAGE"},100);
         initXutil();
         initView();
         initData();// 创建Fragement的过程需要时间(视图,loadingpager)
@@ -142,5 +144,11 @@ public class MainActivity extends AppCompatActivity {
     private void initView() {
         mTab_main = findViewById(R.id.tab_main);
         mVp_main = findViewById(R.id.vp_main);
+    }
+
+    @Override
+    protected void onDestroy() {
+        DownLoadManager.getDownLoadManagerInstance().stopDownload();
+        super.onDestroy();
     }
 }

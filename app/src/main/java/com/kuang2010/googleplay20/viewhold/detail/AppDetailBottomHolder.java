@@ -37,8 +37,11 @@ public class AppDetailBottomHolder extends BaseHolder<AppInfoBean> implements Vi
     @Override
     protected void bindDataToView(AppInfoBean data) {
         mAppInfoBean = data;
-        DownloadInfo mDownloadInfo = DownLoadManager.getDownLoadManagerInstance().getDownLoadInfo(mContext, data);
-        upDateDownloadUi(mDownloadInfo);
+//        DownloadInfo mDownloadInfo = DownLoadManager.getDownLoadManagerInstance().getDownLoadInfo(mContext, data);
+//        upDateDownloadUi(mDownloadInfo);
+        //手动发布一次通知,让观察者获取到当前的downloadInfo，并刷新UI
+        DownLoadManager.getDownLoadManagerInstance().notifyUpdateUi(DownLoadManager.getDownLoadManagerInstance().getDownLoadInfo(mContext,mAppInfoBean));
+
     }
 
     @Override
@@ -46,6 +49,7 @@ public class AppDetailBottomHolder extends BaseHolder<AppInfoBean> implements Vi
         View view = LayoutInflater.from(mContext).inflate(R.layout.item_detail_bottom, null);
         mPbtn_detail_bottom = view.findViewById(R.id.pbtn_detail_bottom);
         mPbtn_detail_bottom.setOnClickListener(this);
+        DownLoadManager.getDownLoadManagerInstance().addDownLoadObserve(this);//在外面的页面也添加了观察者
         return view;
     }
 
@@ -132,7 +136,7 @@ public class AppDetailBottomHolder extends BaseHolder<AppInfoBean> implements Vi
     @Override
     public void onDownLoadUpdate(DownloadInfo downloadInfo) {
         // 过滤不属于本观察者的通知,因为存在另外的线程可能正在执行它的下载任务，它会发布通知，这个通知是所有观察者都能收到的,观察者和被观察者是多对一的关系
-        if (!downloadInfo.packageName.equals(mAppInfoBean.packageName)) {
+        if (downloadInfo==null||!downloadInfo.packageName.equals(mAppInfoBean.packageName)) {
             return;
         }
 

@@ -36,9 +36,6 @@ public class DetailActivity extends AppCompatActivity {
         initView();
         initData();
         initEvent();
-
-        requestPermissions(new String[]{"android.permission.WRITE_EXTERNAL_STORAGE","android.permission.READ_EXTERNAL_STORAGE"},100);
-
     }
 
     private void initEvent() {
@@ -124,7 +121,7 @@ public class DetailActivity extends AppCompatActivity {
         if(mAppDetailBottomHolder!=null){//网络慢时，进入该页面mAppDetailBottomHolder是空的，只有离开这个页面跳到了其他APP页面再回到这个页面网络加载完成后才会不为空
             // 添加观察者,继续监听
             DownLoadManager.getDownLoadManagerInstance().addDownLoadObserve(mAppDetailBottomHolder);
-            //手动发布一次通知,让观察者获取到当前的downloadInfo
+            //手动发布一次通知,让观察者获取到当前的downloadInfo，并刷新UI
             DownLoadManager.getDownLoadManagerInstance().notifyUpdateUi(DownLoadManager.getDownLoadManagerInstance().getDownLoadInfo(this,mAppInfoBean));
         }
         super.onResume();

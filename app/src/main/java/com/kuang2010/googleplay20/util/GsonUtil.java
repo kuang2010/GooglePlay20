@@ -102,13 +102,13 @@ public class GsonUtil {
      * 将json字符串转换成任意对象T
      * 通用解析(泛型解析),通过反射拿到泛型的具体类型
      * @param result  json字符串 "{}" "[]"
-     * @param cls 泛型T的声明所在的类的字节码
-     * @param <T> 任一对象
-     * @return 任一对象
+     * @param o 声明了泛型T的类的 子类对象o。在创建 子类对象o时要传入具体类型 ,
+     *          如 Object o = new Object<Bean>(){};内部类也是个子类
+     * @return 任一Bean对象
      */
-    public static  <T>T json2T(String result,Class<?> cls){
+    public static  <T>T json2T(String result,Object o){
         //通用解析：通过反射拿到cls类声明的所有泛型的具体类型
-        ParameterizedType genericSuperclass = (ParameterizedType) cls.getGenericSuperclass();
+        ParameterizedType genericSuperclass = (ParameterizedType) o.getClass().getGenericSuperclass();
         Type[] actualTypeArguments = genericSuperclass.getActualTypeArguments();//所有泛型类型
         Type actualTypeArgument = actualTypeArguments[0];//默认第0个泛型对应的具体类型就是要返回的类型
         return new Gson().fromJson(result,actualTypeArgument);

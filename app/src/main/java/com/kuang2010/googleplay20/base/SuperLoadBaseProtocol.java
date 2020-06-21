@@ -143,7 +143,7 @@ public abstract class SuperLoadBaseProtocol<T,ItemBean> extends BaseProtocol{
 //        Type[] actualTypeArguments = genericSuperclass.getActualTypeArguments();//本类所有泛型类型
 //        Type actualTypeArgument = actualTypeArguments[0];
 //        return new Gson().fromJson(result,actualTypeArgument);
-        return  GsonUtil.json2T(result,this.getClass());
+        return  GsonUtil.json2T(result,this);
     } ;
 
 

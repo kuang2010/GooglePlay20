@@ -4,6 +4,9 @@ import com.kuang2010.googleplay20.manager.ActivityStack;
 
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 /**
@@ -30,5 +33,13 @@ public class ExampleUnitTest {
         ActivityStack inastance1 = ActivityStack.getInastance();
         System.out.println(">>>>>>>>>>inastance1="+inastance1);
         //>>>>>>>>>>inastance1=com.kuang2010.googleplay20.manager.ActivityStack@22927a81
+    }
+
+
+    @Test
+    public void test3(){
+        com.kuang2010.googleplay20.Test test = new com.kuang2010.googleplay20.Test<TestBean>(){};
+//        com.kuang2010.googleplay20.Test test = new SubTest();
+        test.test();
     }
 }

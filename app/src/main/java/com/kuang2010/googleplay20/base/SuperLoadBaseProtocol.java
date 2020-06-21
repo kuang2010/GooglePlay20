@@ -1,9 +1,12 @@
 package com.kuang2010.googleplay20.base;
 
 import com.google.gson.Gson;
+import com.kuang2010.googleplay20.util.GsonUtil;
 
 import org.xutils.common.Callback;
 
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.List;
 
 /**
@@ -134,7 +137,14 @@ public abstract class SuperLoadBaseProtocol<T,ItemBean> extends BaseProtocol{
      * @param result json字符串数据
      * @return 解析后的数据 可能是bean，也可能是集合
      */
-    protected abstract T parasJsonString(String result) ;
+    protected  T parasJsonString(String result){
+        //通用解析：通过反射拿到本类声明的所有泛型的具体类型
+//        ParameterizedType genericSuperclass = (ParameterizedType) this.getClass().getGenericSuperclass();
+//        Type[] actualTypeArguments = genericSuperclass.getActualTypeArguments();//本类所有泛型类型
+//        Type actualTypeArgument = actualTypeArguments[0];
+//        return new Gson().fromJson(result,actualTypeArgument);
+        return  GsonUtil.json2T(result,this.getClass());
+    } ;
 
 
     /**

@@ -1,7 +1,6 @@
 package com.kuang2010.googleplay20.protocol;
 
 import com.google.gson.reflect.TypeToken;
-import com.kuang2010.googleplay20.base.LoadBaseProtocol;
 import com.kuang2010.googleplay20.base.SuperLoadBaseProtocol;
 import com.kuang2010.googleplay20.bean.AppInfoBean;
 import com.kuang2010.googleplay20.bean.HomeBean;
@@ -29,9 +28,9 @@ public class AppLoadProtocol extends SuperLoadBaseProtocol<List<AppInfoBean>, Ap
         return appInfoBeans;
     }
 
-    @Override
-    protected List<AppInfoBean> parasJsonString(String result) {
-//        return GsonUtil.json2List(result,AppInfoBean.class);
-        return GsonUtil.jsonType2List(result,new TypeToken<List<AppInfoBean>>(){}.getType());
-    }
+//    @Override
+//    protected List<AppInfoBean> parasJsonString(String result) {
+////        return GsonUtil.json2List(result,AppInfoBean.class);
+//        return GsonUtil.jsonType2List(result,new TypeToken<List<AppInfoBean>>(){}.getType());
+//    }
 }

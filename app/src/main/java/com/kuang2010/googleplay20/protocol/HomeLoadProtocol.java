@@ -1,6 +1,5 @@
 package com.kuang2010.googleplay20.protocol;
 
-import com.kuang2010.googleplay20.base.LoadBaseProtocol;
 import com.kuang2010.googleplay20.base.SuperLoadBaseProtocol;
 import com.kuang2010.googleplay20.bean.AppInfoBean;
 import com.kuang2010.googleplay20.bean.HomeBean;
@@ -26,10 +25,10 @@ public class HomeLoadProtocol extends SuperLoadBaseProtocol<HomeBean, AppInfoBea
         return homeBean.list;
     }
 
-    @Override
-    protected HomeBean parasJsonString(String result) {
-        return GsonUtil.json2Bean(result,HomeBean.class);
-    }
+//    @Override
+//    protected HomeBean parasJsonString(String result) {
+//        return GsonUtil.json2Bean(result,HomeBean.class);
+//    }
 
     @Override
     protected List<String> getLunboPictures(HomeBean homeBean) {

@@ -8,7 +8,7 @@ import java.util.List;
  * author: kuangzeyu2019
  * date: 2020/6/13
  * time: 13:30
- * desc: 加载更多数据的协议
+ * desc: 加载更多数据的协议 ， 作废
  * T是接口返回的所有数据类型，有可能是集合，有可能是bean。
  * ItemBean是接口返回的所有数据里的一种bean数据类型
  */

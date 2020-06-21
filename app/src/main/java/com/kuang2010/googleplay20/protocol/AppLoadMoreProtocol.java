@@ -11,7 +11,7 @@ import java.util.List;
  * author: kuangzeyu2019
  * date: 2020/6/14
  * time: 17:27
- * desc:
+ * desc: 作废
  */
 public class AppLoadMoreProtocol extends LoadMoreBaseProtocol<List<AppInfoBean>, AppInfoBean> {
 

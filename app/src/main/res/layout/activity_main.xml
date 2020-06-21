@@ -8,29 +8,51 @@
     tools:context=".MainActivity"
     android:background="#f0f0f0">
 
-
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/vp_main"
+    <androidx.drawerlayout.widget.DrawerLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+        <!-- 左菜单区域 -->
+        <FrameLayout
+            android:id="@+id/main_fl_menu"
+            android:layout_width="180dp"
+            android:layout_height="match_parent"
+            android:background="#ccc"
+            android:layout_gravity="start" >
+        </FrameLayout>
+        <!--右菜单区域-->
+        <FrameLayout
+            android:layout_width="180dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="right"
+            android:background="#0f0" >
+        </FrameLayout>
 
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tab_main"
+
+        <!--内容区域-->
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/vp_main"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top"
-            app:tabMode="scrollable"
-            app:tabBackground="@drawable/selector_bg_main_tab"
-            app:tabIndicatorColor="@color/tab_indicator_selected"
-            app:tabIndicator="@drawable/shape_tab_indicator"
-            app:tabIndicatorHeight="5dp"
-            app:tabTextColor="@color/tab_text_normal"
-            app:tabSelectedTextColor="@color/tab_text_selected"
-            app:tabIndicatorFullWidth="true"
-            app:tabRippleColor="@color/black"
-            app:tabTextAppearance="@style/TabLayoutTextStyle"/>
+            android:layout_height="match_parent">
 
-    </androidx.viewpager.widget.ViewPager>
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tab_main"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                app:tabMode="scrollable"
+                app:tabBackground="@drawable/selector_bg_main_tab"
+                app:tabIndicatorColor="@color/tab_indicator_selected"
+                app:tabIndicator="@drawable/shape_tab_indicator"
+                app:tabIndicatorHeight="5dp"
+                app:tabTextColor="@color/tab_text_normal"
+                app:tabSelectedTextColor="@color/tab_text_selected"
+                app:tabIndicatorFullWidth="true"
+                app:tabRippleColor="@color/black"
+                app:tabTextAppearance="@style/TabLayoutTextStyle"/>
+        </androidx.viewpager.widget.ViewPager>
+    </androidx.drawerlayout.widget.DrawerLayout>
+
+
 
 
 </LinearLayout>

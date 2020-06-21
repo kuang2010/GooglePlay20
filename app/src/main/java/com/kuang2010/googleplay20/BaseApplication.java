@@ -4,6 +4,8 @@ import android.app.Application;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 
+import com.kuang2010.googleplay20.manager.ActivityStack;
+
 import androidx.annotation.NonNull;
 
 /**
@@ -27,7 +29,8 @@ public class BaseApplication extends Application {
         Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
             @Override
             public void uncaughtException(@NonNull Thread t, @NonNull Throwable e) {
-                android.os.Process.killProcess(android.os.Process.myPid());
+                ActivityStack.getInastance().AppExit();
+                System.exit(0);
             }
         });
     }

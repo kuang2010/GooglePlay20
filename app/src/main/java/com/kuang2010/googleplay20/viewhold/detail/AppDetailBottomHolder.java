@@ -21,7 +21,7 @@ import java.io.File;
  * author: kuangzeyu2019
  * date: 2020/6/16
  * time: 19:20
- * desc: 应用的下载部分
+ * desc: 应用的下载部分 viewhold , 下载观察者
  */
 public class AppDetailBottomHolder extends BaseHolder<AppInfoBean> implements View.OnClickListener, DownLoadManager.DownLoadObserve {
 

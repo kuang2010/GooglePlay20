@@ -13,6 +13,7 @@ import android.view.ViewTreeObserver;
 
 import com.google.android.material.tabs.TabLayout;
 import com.kuang2010.googleplay20.adapter.MainPagerAdapter;
+import com.kuang2010.googleplay20.base.BaseActivity;
 import com.kuang2010.googleplay20.base.BaseFragment;
 import com.kuang2010.googleplay20.bean.TabFragmentBean;
 import com.kuang2010.googleplay20.fragment.AppFragment;
@@ -23,6 +24,7 @@ import com.kuang2010.googleplay20.fragment.HotFragment;
 import com.kuang2010.googleplay20.fragment.RecommendFragment;
 import com.kuang2010.googleplay20.fragment.SubjectFragment;
 import com.kuang2010.googleplay20.fragment.TestFragment;
+import com.kuang2010.googleplay20.manager.ActivityStack;
 import com.kuang2010.googleplay20.manager.DownLoadManager;
 import com.kuang2010.googleplay20.util.FileUtil;
 
@@ -36,7 +38,7 @@ import java.security.Permission;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     private TabLayout mTab_main;
     private ViewPager mVp_main;
@@ -51,6 +53,8 @@ public class MainActivity extends AppCompatActivity {
         initView();
         initData();// 创建Fragement的过程需要时间(视图,loadingpager)
         initEvent();
+
+        ActivityStack.getInastance();
     }
 
 

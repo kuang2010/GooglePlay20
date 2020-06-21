@@ -8,10 +8,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
 
+import com.kuang2010.googleplay20.base.BaseActivity;
 import com.kuang2010.googleplay20.base.LoadingPager;
 import com.kuang2010.googleplay20.base.SuperLoadBaseProtocol;
 import com.kuang2010.googleplay20.bean.AppInfoBean;
 import com.kuang2010.googleplay20.conf.Constant;
+import com.kuang2010.googleplay20.manager.ActivityStack;
 import com.kuang2010.googleplay20.manager.DownLoadManager;
 import com.kuang2010.googleplay20.protocol.DetailPageProtocol;
 import com.kuang2010.googleplay20.viewhold.detail.AppDetailBottomHolder;
@@ -23,7 +25,7 @@ import com.kuang2010.googleplay20.viewhold.detail.AppDetailSafeHolder;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
-public class DetailActivity extends AppCompatActivity {
+public class DetailActivity extends BaseActivity {
 
     private String mPackageName;
     private LoadingPager mLoadingPager;
@@ -36,6 +38,8 @@ public class DetailActivity extends AppCompatActivity {
         initView();
         initData();
         initEvent();
+
+        ActivityStack.getInastance();
     }
 
     private void initEvent() {

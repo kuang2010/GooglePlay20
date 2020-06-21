@@ -32,7 +32,7 @@ import androidx.annotation.NonNull;
  * author: kuangzeyu2019
  * date: 2020/6/13
  * time: 11:50
- * desc:
+ * desc: viewhold , 下载观察者
  */
 public class AppInfoViewHold extends BaseViewHold<AppInfoBean> implements View.OnClickListener, DownLoadManager.DownLoadObserve, DownloadProgressView.OnTachedWindownListener {
 
@@ -167,7 +167,7 @@ public class AppInfoViewHold extends BaseViewHold<AppInfoBean> implements View.O
     @Override
     public void onDownLoadUpdate(DownloadInfo downloadInfo) {
         // 过滤不属于本观察者的通知,因为存在另外的线程可能正在执行它的下载任务，它会发布通知，这个通知是所有观察者都能收到的,观察者和被观察者是多对一的关系
-        if (downloadInfo==null||!downloadInfo.packageName.equals(mAppInfoBean.packageName)) {
+        if (downloadInfo==null || mAppInfoBean ==null ||!downloadInfo.packageName.equals(mAppInfoBean.packageName)) {
             return;
         }
         mDownloadInfo = downloadInfo;

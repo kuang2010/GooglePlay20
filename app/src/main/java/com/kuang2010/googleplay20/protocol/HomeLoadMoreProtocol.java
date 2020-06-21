@@ -11,7 +11,7 @@ import java.util.List;
  * author: kuangzeyu2019
  * date: 2020/6/13
  * time: 17:42
- * desc:
+ * desc: 作废
  */
 public class HomeLoadMoreProtocol extends LoadMoreBaseProtocol<HomeBean, AppInfoBean> {
 

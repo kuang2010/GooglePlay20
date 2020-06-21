@@ -390,7 +390,7 @@ public class DownLoadManager {
      * @param downLoadObserve
      */
     public void addDownLoadObserve(DownLoadObserve downLoadObserve){//观察者设计模式
-        if (!mDownLoadObserves.contains(downLoadObserve)){
+        if (downLoadObserve!=null && !mDownLoadObserves.contains(downLoadObserve)){
             mDownLoadObserves.add(downLoadObserve);
         }
 

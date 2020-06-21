@@ -37,7 +37,7 @@ public abstract class BaseRvAdapter<ItemBean> extends RecyclerView.Adapter<BaseV
     protected Context mContext;
     private int mLunboItemCount;
     private int mFootItemCount;
-
+    private List<BaseViewHold> mViewHolds = new ArrayList<>();
 
     public BaseRvAdapter(Context context) {
         mContext = context;
@@ -95,6 +95,9 @@ public abstract class BaseRvAdapter<ItemBean> extends RecyclerView.Adapter<BaseV
         STATE_LOAD_ERROR;//加载出错，点击重试 (还有更多数据)
     }
 
+    public List<BaseViewHold> getViewHolds() {
+        return mViewHolds;
+    }
 
     @NonNull
     @Override
@@ -106,6 +109,9 @@ public abstract class BaseRvAdapter<ItemBean> extends RecyclerView.Adapter<BaseV
             viewHold = getItemInfoViewHold(parent);//new AppInfoViewHold(mContext,LayoutInflater.from(mContext).inflate(R.layout.item_home_info,parent,false));
         }else if (viewType == ITEMTYPE_FOOT){
             viewHold = new FootViewHold(mContext,LayoutInflater.from(mContext).inflate(R.layout.item_load_more,parent,false));
+        }
+        if (viewHold!=null){
+            mViewHolds.add(viewHold);
         }
         return viewHold;
     }

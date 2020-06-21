@@ -8,6 +8,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,7 +30,7 @@ public class GsonUtil {
     }
 
     /**
-     * 将 object 转换成 json
+     * 将 object 转换成 json字符串
      *
      * @param object
      * @return
@@ -38,11 +39,13 @@ public class GsonUtil {
         return gson.toJson(object);
     }
 
+
+
     /**
      * 将 json字符串转换成 javabean
      * Bean解析
      * @param jsonString {"":"","":{},"":[]}
-     * @param cls
+     * @param cls 泛型T所对应的字节码对象
      * @return
      */
     public static <T> T json2Bean(String jsonString, Class<T> cls) {
@@ -57,7 +60,7 @@ public class GsonUtil {
      * 将json字符串转换成List
      * 泛型解析
      * @param json [{},{}]
-     * @param cls
+     * @param cls 泛型T所对应的字节码对象
      * @return
      */
     public static <T> List<T> json2List(String json, Class<T> cls) {
@@ -93,6 +96,22 @@ public class GsonUtil {
      */
     public static <K,V> HashMap<K,V> jsonType2Map(String json,Type type){
         return  gson.fromJson(json, type);//gson.fromJson(json,new TypeToken<HashMap<K,V>>(){}.getType());
+    }
+
+    /**
+     * 将json字符串转换成任意对象T
+     * 通用解析(泛型解析),通过反射拿到泛型的具体类型
+     * @param result  json字符串 "{}" "[]"
+     * @param cls 泛型T的声明所在的类的字节码
+     * @param <T> 任一对象
+     * @return 任一对象
+     */
+    public static  <T>T json2T(String result,Class<?> cls){
+        //通用解析：通过反射拿到cls类声明的所有泛型的具体类型
+        ParameterizedType genericSuperclass = (ParameterizedType) cls.getGenericSuperclass();
+        Type[] actualTypeArguments = genericSuperclass.getActualTypeArguments();//所有泛型类型
+        Type actualTypeArgument = actualTypeArguments[0];//默认第0个泛型对应的具体类型就是要返回的类型
+        return new Gson().fromJson(result,actualTypeArgument);
     }
 
     /**

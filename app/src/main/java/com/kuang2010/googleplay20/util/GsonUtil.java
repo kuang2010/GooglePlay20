@@ -32,7 +32,7 @@ public class GsonUtil {
     /**
      * 将 object 转换成 json字符串
      *
-     * @param object
+     * @param object  bean对象或者Map对象
      * @return
      */
     public static String object2String(Object object) {

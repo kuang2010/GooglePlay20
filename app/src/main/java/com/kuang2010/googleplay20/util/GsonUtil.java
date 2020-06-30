@@ -110,7 +110,7 @@ public class GsonUtil {
         //通用解析：通过反射拿到cls类声明的所有泛型的具体类型
         ParameterizedType genericSuperclass = (ParameterizedType) o.getClass().getGenericSuperclass();// 获取当前new的对象的父类类型
         Type[] actualTypeArguments = genericSuperclass.getActualTypeArguments();//所有泛型类型
-        Type actualTypeArgument = actualTypeArguments[0];//默认第0个泛型对应的具体类型就是要返回的类型
+        Type actualTypeArgument = actualTypeArguments[0];//默认第0个泛型对应的具体类型就是要返回的类型,Type=Class
         return new Gson().fromJson(result,actualTypeArgument);
     }
 

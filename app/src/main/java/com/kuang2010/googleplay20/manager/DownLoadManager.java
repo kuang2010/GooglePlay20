@@ -49,7 +49,7 @@ public class DownLoadManager {
 //    private static int mCurState;
     private Map<String,DownloadInfo> mDownloadInfos = new HashMap<>();//给外界根据包名获取到对应的上一次的下载信息
     private Map<String,Runnable> mRunnableMap = new HashMap<>();//所有下载任务的集合
-    private boolean isStop;//终止所有下载任务
+    private volatile boolean isStop;//终止所有下载任务
 
     private DownLoadManager(){};
 

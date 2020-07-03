@@ -12,7 +12,7 @@ public class SingleInstance {
 
     private SingleInstance(){}
 
-    private static SingleInstance mSingleInstance;
+    private static volatile SingleInstance mSingleInstance;
 
     public static SingleInstance getInstance(){
         //双重判断加锁

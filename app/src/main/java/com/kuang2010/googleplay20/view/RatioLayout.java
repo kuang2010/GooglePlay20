@@ -58,9 +58,9 @@ public class RatioLayout extends FrameLayout {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         /**
-         android.view.View.MeasureSpec.UNSPECIFIED:  wrap_content
+         android.view.View.MeasureSpec.UNSPECIFIED:
          android.view.View.MeasureSpec.EXACTLY:  match_parent 100px 100dp
-         android.view.View.MeasureSpec.AT_MOST
+         android.view.View.MeasureSpec.AT_MOST  wrap_content
          */
         int widthMode = MeasureSpec.getMode(widthMeasureSpec);
         int heightMode = MeasureSpec.getMode(heightMeasureSpec);
